@@ -1,0 +1,19 @@
+{
+  "QueryFilter": {
+    "expression": {
+      "operator": "and",
+      "nestedExpression": [
+        {
+          "argument": [""],
+          "operator": "EQUALS",
+          "property": "componentId"
+        },
+        {
+          "argument": [""],
+          "operator": "EQUALS",
+          "property": "packageVersion"
+        }
+      ]
+    }
+  }
+}

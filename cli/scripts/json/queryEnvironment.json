@@ -1,0 +1,9 @@
+{
+  "QueryFilter": {
+    "expression": {
+      "argument": [""],
+      "operator": "EQUALS",
+      "property": "name"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+	"pipelines": [
+		{
+			"job": "Deploy Package",
+			"processName": "Process Name",
+			"packageVersion": "1.0",
+			"componentType": "process",
+            "componentId": "",
+			"notes": "",
+            "extractComponentXmlFolder": "",
+           	"tag": "true",
+			"listenerStatus": "RUNNING"
+		}
+	]
+}
