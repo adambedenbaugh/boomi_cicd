@@ -1,5 +1,4 @@
 from common_util import *
-import requests
 
 
 def query_environment(env):

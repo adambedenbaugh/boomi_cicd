@@ -1,5 +1,4 @@
 from common_util import *
-import requests
 
 
 def create_deployed_package(env, release, package_id, environment_id):

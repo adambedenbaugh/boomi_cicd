@@ -1,5 +1,4 @@
 from common_util import *
-import requests
 
 
 def create_packaged_component(env, release):

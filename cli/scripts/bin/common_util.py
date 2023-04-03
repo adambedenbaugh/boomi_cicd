@@ -1,12 +1,13 @@
 import argparse
-from constants import *
 import json
 import logging
-from ratelimit import limits, sleep_and_retry
-import requests
+import os
 import sys
-import yaml
 
+import requests
+from ratelimit import limits, sleep_and_retry
+
+from constants import *
 
 # Set Parse for Command Line Options
 parser = argparse.ArgumentParser()
@@ -24,17 +25,9 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-
 def parse_json(file_path):
     f = open(DIRECTORY_BASE + file_path)
     data = json.load(f)
-    f.close()
-    return data
-
-
-def parse_yaml(file_path):
-    f = open(file_path, "r")
-    data = yaml.safe_load(f)
     f.close()
     return data
 
@@ -43,25 +36,19 @@ def set_env():
     if args.env:
         return parse_json(args.env)
     else:
-        # Populate dict with environment variables
-        print("todo")
+        env_dict = {"baseUrl": os.environ.get("BASEURL"),
+                    "accountId": os.environ.get("BOOMI_ACCOUNTID"),
+                    "username": os.environ.get("BOOMI_USERNAME"),
+                    "password": os.environ.get("BOOMI_PASSWORD"),
+                    "environmentName": os.environ.get("ENVIRONMENT")}
+        return env_dict
 
 
 def set_release():
     if args.release:
         return parse_json(args.release)
-
-
-
-def log_header(label):
-    line = ""
-    line += "-" * 100
-    print(line)
-    print(label)
-    print(line)
-
-
-# Update this to use Python's standard logger
+    else:
+        raise Exception("Release file location not set.")
 
 
 def log(message):
@@ -71,7 +58,7 @@ def log(message):
 @sleep_and_retry
 @limits(calls=CALLS, period=RATE_LIMIT)
 def check_limit():
-    ''' Empty function just to check for calls to API '''
+    """ Empty function to check for calls to API """
     return
 
 
