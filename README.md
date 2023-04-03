@@ -2,8 +2,5 @@
 
 
 ```bash
-query_packaged_component.py [credential-file] [release-json]
-  -e
-  -e
-  -e
+releasePipeline.py -e <env-file-location> -r <release-file-location>
 ```

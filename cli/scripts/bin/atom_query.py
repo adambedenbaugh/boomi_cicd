@@ -19,7 +19,7 @@ def query_atom_id(env):
     log("Atom ID")
     print("Atom Id Query URL: {}".format(atom_id_url))
 
-    atom_id_query = "cli/scripts/json/queryAtom.json"
+    atom_id_query = "cli/scripts/json/atomQuery.json"
 
     query = parse_json(atom_id_query)
     query["QueryFilter"]["expression"]["argument"] = atom_query_name
