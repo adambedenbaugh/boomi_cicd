@@ -1,0 +1,677 @@
+{
+  "source": 2,
+  "revision": 26,
+  "description": "This is a general Boomi release pipeline",
+  "isDeleted": false,
+  "variables": {
+    "RELEASE_FILE": {
+      "value": "conf/python-release.json",
+      "allowOverride": true
+    }
+  },
+  "variableGroups": [3],
+  "environments": [
+    {
+      "id": 12,
+      "name": "Development",
+      "rank": 1,
+      "variables": { "ENVIRONMENT": { "value": "Test Cloud Environment" } },
+      "variableGroups": [],
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 34
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 1
+        }
+      },
+      "deployStep": { "id": 41 },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 42
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 2
+        }
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": 0 },
+            "agentSpecification": { "identifier": "ubuntu-latest" },
+            "skipArtifactsDownload": false,
+            "artifactsDownloadInput": { "downloadInputs": [] },
+            "queueId": 27,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Agent job",
+          "refName": null,
+          "workflowTasks": [
+            {
+              "environment": {},
+              "taskId": "33c63b11-352b-45a2-ba1b-54cb568a29ca",
+              "version": "0.*",
+              "name": "Use Python 3.11",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "versionSpec": "3.11",
+                "disableDownloadFromRegistry": "false",
+                "allowUnstable": "false",
+                "githubToken": "",
+                "addToPath": "true",
+                "architecture": "x64"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Pip Install",
+              "refName": "BOOMI_PASSWORD",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "pip install ratelimit\npip install requests\n\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            },
+            {
+              "environment": { "BOOMI_PASSWORD": "$(BOOMI_PASSWORD)" },
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Boomi Release Pipeline",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "python $(System.DefaultWorkingDirectory)/$(CLI_BASE_DIR)/cli/scripts/bin/releasePipeline.py\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": true,
+        "badgeEnabled": false,
+        "autoLinkWorkItems": false,
+        "pullRequestDeploymentEnabled": false
+      },
+      "demands": [],
+      "conditions": [
+        { "name": "ReleaseStarted", "conditionType": 1, "value": "" }
+      ],
+      "executionPolicy": { "concurrencyCount": 1, "queueDepthCount": 0 },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {
+        "BoardsEnvironmentType": {
+          "$type": "System.String",
+          "$value": "unmapped"
+        },
+        "LinkBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+      },
+      "preDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "postDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "environmentTriggers": []
+      },
+    {
+      "id": 16,
+      "name": "Integration",
+      "rank": 2,
+      "variables": { "ENVIRONMENT": { "value": "Int Cloud Environment" } },
+      "variableGroups": [],
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 46
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 1
+        }
+      },
+      "deployStep": { "id": 51 },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 52
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 2
+        }
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": 0 },
+            "agentSpecification": { "identifier": "ubuntu-latest" },
+            "skipArtifactsDownload": false,
+            "artifactsDownloadInput": { "downloadInputs": [] },
+            "queueId": 27,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Agent job",
+          "refName": null,
+          "workflowTasks": [
+            {
+              "environment": {},
+              "taskId": "33c63b11-352b-45a2-ba1b-54cb568a29ca",
+              "version": "0.*",
+              "name": "Use Python 3.11",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "versionSpec": "3.11",
+                "disableDownloadFromRegistry": "false",
+                "allowUnstable": "false",
+                "githubToken": "",
+                "addToPath": "true",
+                "architecture": "x64"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Pip Install",
+              "refName": "BOOMI_PASSWORD",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "pip install ratelimit\npip install requests\n\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            },
+            {
+              "environment": { "BOOMI_PASSWORD": "$(BOOMI_PASSWORD)" },
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Boomi Release Pipeline",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "python $(System.DefaultWorkingDirectory)/$(CLI_BASE_DIR)/cli/scripts/bin/releasePipeline.py\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": true,
+        "badgeEnabled": false,
+        "autoLinkWorkItems": false,
+        "pullRequestDeploymentEnabled": false
+      },
+      "demands": [],
+      "conditions": [],
+      "executionPolicy": { "concurrencyCount": 1, "queueDepthCount": 0 },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {
+        "BoardsEnvironmentType": {
+          "$type": "System.String",
+          "$value": "unmapped"
+        },
+        "LinkBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+      },
+      "preDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "postDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "environmentTriggers": []
+    },
+    {
+      "id": 17,
+      "name": "Stage",
+      "rank": 3,
+      "variables": { "ENVIRONMENT": { "value": "Stage Cloud Environment" } },
+      "variableGroups": [],
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 47
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 1
+        }
+      },
+      "deployStep": { "id": 50 },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 53
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 2
+        }
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": 0 },
+            "agentSpecification": { "identifier": "ubuntu-latest" },
+            "skipArtifactsDownload": false,
+            "artifactsDownloadInput": { "downloadInputs": [] },
+            "queueId": 27,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Agent job",
+          "refName": null,
+          "workflowTasks": [
+            {
+              "environment": {},
+              "taskId": "33c63b11-352b-45a2-ba1b-54cb568a29ca",
+              "version": "0.*",
+              "name": "Use Python 3.11",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "versionSpec": "3.11",
+                "disableDownloadFromRegistry": "false",
+                "allowUnstable": "false",
+                "githubToken": "",
+                "addToPath": "true",
+                "architecture": "x64"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Pip Install",
+              "refName": "BOOMI_PASSWORD",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "pip install ratelimit\npip install requests\n\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            },
+            {
+              "environment": { "BOOMI_PASSWORD": "$(BOOMI_PASSWORD)" },
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Boomi Release Pipeline",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "python $(System.DefaultWorkingDirectory)/$(CLI_BASE_DIR)/cli/scripts/bin/releasePipeline.py\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": true,
+        "badgeEnabled": false,
+        "autoLinkWorkItems": false,
+        "pullRequestDeploymentEnabled": false
+      },
+      "demands": [],
+      "conditions": [],
+      "executionPolicy": { "concurrencyCount": 1, "queueDepthCount": 0 },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {
+        "BoardsEnvironmentType": {
+          "$type": "System.String",
+          "$value": "unmapped"
+        },
+        "LinkBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+      },
+      "preDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "postDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "environmentTriggers": []
+    },
+    {
+      "id": 18,
+      "name": "Production",
+      "rank": 4,
+      "variables": { "ENVIRONMENT": { "value": "Prod Cloud Environment" } },
+      "variableGroups": [],
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 48
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 1
+        }
+      },
+      "deployStep": { "id": 49 },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 54
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 2
+        }
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": 0 },
+            "agentSpecification": { "identifier": "ubuntu-latest" },
+            "skipArtifactsDownload": false,
+            "artifactsDownloadInput": { "downloadInputs": [] },
+            "queueId": 27,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Agent job",
+          "refName": null,
+          "workflowTasks": [
+            {
+              "environment": {},
+              "taskId": "33c63b11-352b-45a2-ba1b-54cb568a29ca",
+              "version": "0.*",
+              "name": "Use Python 3.11",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "versionSpec": "3.11",
+                "disableDownloadFromRegistry": "false",
+                "allowUnstable": "false",
+                "githubToken": "",
+                "addToPath": "true",
+                "architecture": "x64"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Pip Install",
+              "refName": "BOOMI_PASSWORD",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "pip install ratelimit\npip install requests\n\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            },
+            {
+              "environment": { "BOOMI_PASSWORD": "$(BOOMI_PASSWORD)" },
+              "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+              "version": "2.*",
+              "name": "Boomi Release Pipeline",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "script": "python $(System.DefaultWorkingDirectory)/$(CLI_BASE_DIR)/cli/scripts/bin/releasePipeline.py\n\n",
+                "workingDirectory": "",
+                "failOnStderr": "false"
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": true,
+        "badgeEnabled": false,
+        "autoLinkWorkItems": false,
+        "pullRequestDeploymentEnabled": false
+      },
+      "demands": [],
+      "conditions": [],
+      "executionPolicy": { "concurrencyCount": 1, "queueDepthCount": 0 },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {
+        "BoardsEnvironmentType": {
+          "$type": "System.String",
+          "$value": "unmapped"
+        },
+        "LinkBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+      },
+      "preDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "postDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "environmentTriggers": []
+    }
+  ],
+  "artifacts": [],
+  "triggers": [],
+  "releaseNameFormat": "Boomi Release-$(rev:r)",
+  "tags": [],
+  "properties": {
+    "DefinitionCreationSource": {
+      "$type": "System.String",
+      "$value": "ReleaseClone"
+    },
+    "IntegrateBoardsWorkItems": { "$type": "System.String", "$value": "False" },
+    "IntegrateJiraWorkItems": { "$type": "System.String", "$value": "false" }
+  },
+  "id": 4,
+  "name": "Boomi Release Pipeline",
+  "path": "\\",
+  "projectReference": null
+}

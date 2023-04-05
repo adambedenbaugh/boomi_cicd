@@ -2,7 +2,6 @@ from deployed_package import *
 from environment import *
 from packaged_component import *
 
-
 # Open environment variables
 # command line: -e
 env = set_env()
@@ -24,4 +23,5 @@ for release in releases["pipelines"]:
 
     package_deployed = query_deployed_package(env, release, package_id, environment_id)
     if not package_deployed:
-        create_deployed_package(env, release, package_id, environment_id)
+        deployment_id = create_deployed_package(env, release, package_id, environment_id)
+        # delete_deployed_package(env, deployment_id)

@@ -1,4 +1,7 @@
-DIRECTORY_BASE = "C:\\Code\\VSCode\\boomi-cli\\"
+import os
+
+CLI_BASE_DIR = os.environ.get("CLI_BASE_DIR")
+RELEASE_BASE_DIR = os.environ.get("RELEASE_BASE_DIR")
 
 # Set AtomSphere API Rate Limit
 CALLS = 10

@@ -2,7 +2,6 @@ from common_util import *
 
 
 def create_packaged_component(env, release):
-
     resource_path = "/PackagedComponent"
     logging.info(resource_path)
     packaged_component_query = "cli/scripts/json/createPackagedComponent.json"
@@ -14,8 +13,7 @@ def create_packaged_component(env, release):
 
     response = requests_post(env, resource_path, payload)
 
-
-    package_id = json.loads(response.text)["result"][0]["id"]
+    package_id = json.loads(response.text)["packageId"]
     return package_id
 
 

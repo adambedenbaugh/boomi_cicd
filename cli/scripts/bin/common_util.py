@@ -1,7 +1,6 @@
 import argparse
 import json
 import logging
-import os
 import sys
 
 import requests
@@ -14,6 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--env")
 parser.add_argument("-r", "--release")
 args = parser.parse_args()
+print(args)
 
 # Logging conf
 logging.basicConfig(
@@ -26,7 +26,14 @@ logger = logging.getLogger()
 
 
 def parse_json(file_path):
-    f = open(DIRECTORY_BASE + file_path)
+    f = open(os.path.join(CLI_BASE_DIR, file_path))
+    data = json.load(f)
+    f.close()
+    return data
+
+
+def parse_release(file_path):
+    f = open(os.path.join(RELEASE_BASE_DIR, file_path))
     data = json.load(f)
     f.close()
     return data
@@ -48,7 +55,9 @@ def set_release():
     if args.release:
         return parse_json(args.release)
     else:
-        raise Exception("Release file location not set.")
+        release_file = os.environ.get("RELEASE_FILE")
+        return parse_release(release_file)
+        # raise Exception("Release file location not set.")
 
 
 def log(message):
@@ -74,6 +83,22 @@ def requests_post(env, resource_path, payload):
 
     response = requests.post(url, auth=(
         username, password), json=payload, headers=headers)
+    logging.info("Response: {}".format(response.text))
+    response.raise_for_status()
+    return response
+
+
+def requests_delete(env, resource_path):
+    check_limit()
+    base_url = env["baseUrl"]
+    account_id = env["accountId"]
+    username = env["username"]
+    password = env["password"]
+    headers = {"Accept": "application/json"}
+    url = base_url + "/" + account_id + resource_path
+
+    response = requests.delete(url, auth=(
+        username, password), headers=headers)
     logging.info("Response: {}".format(response.text))
     response.raise_for_status()
     return response
