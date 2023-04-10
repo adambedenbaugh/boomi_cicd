@@ -6,14 +6,14 @@ import sys
 import requests
 from ratelimit import limits, sleep_and_retry
 
-from constants import *
+from cli.scripts.bin.constants import *
 
 # Set Parse for Command Line Options
-parser = argparse.ArgumentParser()
-parser.add_argument("-e", "--env")
-parser.add_argument("-r", "--release")
-args = parser.parse_args()
-print(args)
+# parser = argparse.ArgumentParser()
+# parser.add_argument("-e", "--env")
+# parser.add_argument("-r", "--release")
+# args = parser.parse_args()
+# print(args)
 
 # Logging conf
 logging.basicConfig(
@@ -39,7 +39,17 @@ def parse_release(file_path):
     return data
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-e", "--env")
+    parser.add_argument("-r", "--release")
+    args = parser.parse_args()
+    print(args)
+    return args
+
+
 def set_env():
+    args = parse_args()
     if args.env:
         return parse_json(args.env)
     else:
@@ -52,6 +62,7 @@ def set_env():
 
 
 def set_release():
+    args = parse_args()
     if args.release:
         return parse_json(args.release)
     else:
