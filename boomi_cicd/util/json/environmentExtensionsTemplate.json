@@ -1,0 +1,19 @@
+{
+  "@type": "EnvironmentExtensions",
+  "connections": {
+    "@type": "Connections",
+    "connection": []
+  },
+  "processProperties": {
+    "@type": "OverrideProcessProperties",
+    "ProcessProperty": []
+  },
+  "properties": {
+    "@type": "OverrideProperties",
+    "property": []
+  },
+  "environmentId": "",
+  "extensionGroupId": "",
+  "id": "",
+  "partial": true
+}

@@ -1,10 +1,12 @@
-from cli.scripts.bin.common_util import *
+from boomi_cicd.util.common_util import *
 
+
+# https://help.boomi.com/bundle/developer_apis/page/r-atm-Environment_object.html
 
 def query_environment(env):
     resource_path = "/Environment/query"
     logging.info(resource_path)
-    environment_query = os.path.join(env["workingDirectory"], "cli/scripts/json/environmentQuery.json")
+    environment_query = os.path.join(env["workingDirectory"], "boomi_cicd/util/json/environmentQuery.json")
     payload = parse_json(environment_query)
     payload["QueryFilter"]["expression"]["argument"][0] = env["environmentName"]
 

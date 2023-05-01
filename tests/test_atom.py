@@ -3,11 +3,11 @@ from unittest.mock import patch
 
 import pytest
 
-from cli.scripts.bin.atom import *
+from boomi_cicd.util.atom import *
 
 
 class TestAtom(unittest.TestCase):
-    @patch('cli.scripts.bin.atom.requests_post')
+    @patch('boomi_cicd.util.atom.requests_post')
     def test_query_atom(self, mock_post):
         mock_post.return_value.text = json.dumps({
             "@type": "QueryResult",
@@ -47,14 +47,14 @@ class TestAtom(unittest.TestCase):
                 }
             }
         }
-        result = query_atom(mock_env)
+        result = query_atom(mock_env, mock_env["atomName"])
 
         # Assert the function calls requests_post with the expected arguments
         mock_post.assert_called_with(mock_env, "/Atom/query", expected_payload)
         # Assert the function returns the expected Atom ID
         assert result == "8a0a749b-4e1f-45c8-b5cc-e637f7c282e5"
 
-    @patch('cli.scripts.bin.atom.requests_post')
+    @patch('boomi_cicd.util.atom.requests_post')
     def test_query_atom_no_results(self, mock_post):
         mock_post.return_value.text = json.dumps({
             "@type": "QueryResult",
@@ -71,6 +71,6 @@ class TestAtom(unittest.TestCase):
             "workingDirectory": "C:\\Code\\VSCode\\boomi-cli\\"
         }
         with pytest.raises(SystemExit) as pytest_wrapped_e:
-            result = query_atom(mock_env)
+            result = query_atom(mock_env, mock_env["atomName"])
         # Assert that the function raises a SystemExit exception
         assert pytest_wrapped_e.type == SystemExit

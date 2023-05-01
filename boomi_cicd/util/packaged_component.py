@@ -1,10 +1,12 @@
-from common_util import *
+from boomi_cicd.util.common_util import *
 
+
+# https://help.boomi.com/bundle/developer_apis/page/r-atm-Packaged_Component_object.html
 
 def create_packaged_component(env, release):
     resource_path = "/PackagedComponent"
     logging.info(resource_path)
-    packaged_component_query = "cli/scripts/json/createPackagedComponent.json"
+    packaged_component_query = "boomi_cicd/util/json/createPackagedComponent.json"
 
     payload = parse_json(packaged_component_query)
     payload["componentId"] = release["componentId"]
@@ -22,7 +24,7 @@ def query_packaged_component(env, release):
     logging.info(resource_path)
     logging.info("ComponentId: {}".format(release["componentId"]))
     logging.info("PackagedVersion: {}".format(release["packageVersion"]))
-    packaged_component_query = "cli/scripts/json/packagedComponentQuery.json"
+    packaged_component_query = "boomi_cicd/util/json/packagedComponentQuery.json"
 
     payload = parse_json(packaged_component_query)
     payload["QueryFilter"]["expression"]["nestedExpression"][0]["argument"][0] = release["componentId"]

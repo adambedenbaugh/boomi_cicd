@@ -1,8 +1,11 @@
 local
-local/*
-cli/scripts/bin/__pycache__
-cli/scripts/bin/__pycache__/*
+boomi-cli/scripts/bin/__pycache__
+boomi-cli/scripts/bin/__pycache__/*
 tests/__pycache__
 tests/.pytest_cache
 .vscode
 .idea
+.pytest_cache
+venv
+/.env/
+.env

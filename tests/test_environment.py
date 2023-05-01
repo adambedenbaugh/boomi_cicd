@@ -4,11 +4,11 @@ from unittest.mock import patch
 
 import pytest
 
-from cli.scripts.bin.environment import query_environment
+from boomi_cicd.util.environment import query_environment
 
 
 class TestEnvironment(unittest.TestCase):
-    @patch('cli.scripts.bin.environment.requests_post')
+    @patch('boomi_cicd.util.environment.requests_post')
     def test_query_environment(self, mock_post):
         mock_post.return_value.text = json.dumps({"@type": "QueryResult", "result": [
             {"@type": "Environment", "id": "13da4a90-53f4-4396-b63d-83ef772ee8d", "name": "Test Cloud Environment",
@@ -38,7 +38,7 @@ class TestEnvironment(unittest.TestCase):
         # Assert the function returns the expected environment ID
         assert result == "13da4a90-53f4-4396-b63d-83ef772ee8d"
 
-    @patch('cli.scripts.bin.environment.requests_post')
+    @patch('boomi_cicd.util.environment.requests_post')
     def test_query_environment_no_results(self, mock_post):
         mock_post.return_value.text = json.dumps({
             "@type": "QueryResult",

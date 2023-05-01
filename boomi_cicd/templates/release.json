@@ -1,0 +1,12 @@
+{
+  "pipelines": [
+    {
+      "processName": "Process Name",
+      "packageVersion": "1.0",
+      "componentId": "",
+      "notes": "",
+      "scheduled": "",
+      "listenerStatus": "RUNNING"
+    }
+  ]
+}

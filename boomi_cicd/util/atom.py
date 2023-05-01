@@ -1,12 +1,14 @@
-from cli.scripts.bin.common_util import *
+from boomi_cicd.util.common_util import *
 
 
-def query_atom(env):
+# https://help.boomi.com/bundle/developer_apis/page/r-atm-Atom_object.html
+
+def query_atom(env, atom_name):
     resource_path = "/Atom/query"
-    environment_query = os.path.join(env["workingDirectory"], "cli/scripts/json/atomQuery.json")
+    environment_query = os.path.join(env["workingDirectory"], "boomi_cicd/util/json/atomQuery.json")
 
     payload = parse_json(environment_query)
-    payload["QueryFilter"]["expression"]["argument"][0] = env["atomName"]
+    payload["QueryFilter"]["expression"]["argument"][0] = atom_name
 
     response = requests_post(env, resource_path, payload)
 
