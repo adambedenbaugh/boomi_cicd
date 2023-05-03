@@ -8,8 +8,23 @@ release file must also be set a release file with the command line arguments (-r
 environment varialble.
 
 ```bash
-releasePipeline.py -e <env-file-location> -r <release-file-location>
+releasePipeline.py -r <release-file-location>
 ```
+
+## Environment Variables
+
+The following environment variables are required to run the releasePipeline.py script. They can be set by environment
+variables or by using a .env file.
+
+| Environment Variable   | Description                                              | Required |  
+|------------------------|----------------------------------------------------------|----------|
+| BOOMI_BASE_URL         | This is the base URL of the Boomi account.               | Yes      |
+| BOOMI_USERNAME         | This is the username of the Boomi account.               | Yes      |
+| BOOMI_PASSWORD         | This is the password of the Boomi account.               | Yes      |
+| BOOMI_ACCOUNT_ID       | This is the account ID of the Boomi account.             | Yes      |
+| BOOMI_ATOM_NAME        | This is the atom ID of the Boomi account.                | Yes      |
+| BOOMI_ENVIRONMENT_NAME | This is the environment ID of the Boomi account.         | Yes      |
+| WORKING_DIRECTORY      | This is the working directory of the CICD runtime agent. | Yes      |
 
 ## Release JSON Elements
 

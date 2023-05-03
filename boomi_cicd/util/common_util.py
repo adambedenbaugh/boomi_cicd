@@ -4,10 +4,11 @@ import logging
 import sys
 
 import requests
+from dotenv import load_dotenv
 
 from boomi_cicd.util.constants import *
 
-# from ratelimit import limits, sleep_and_retry #TODO: Figure out why this is not importing correctly
+# from ratelimit import limits, sleep_and_retry  # TODO: Figure out why this is not importing correctly
 
 # Set Parse for Command Line Options
 # parser = argparse.ArgumentParser()
@@ -49,20 +50,17 @@ def parse_args():
 
 
 def set_env():
-    args = parse_args()
-    if args.env:
-        return parse_json(args.env)
-    else:
-        env_dict = {"baseUrl": os.environ.get("BASEURL"),
-                    "accountId": os.environ.get("BOOMI_ACCOUNTID"),
-                    "username": os.environ.get("BOOMI_USERNAME"),
-                    "password": os.environ.get("BOOMI_PASSWORD"),
-                    "environmentName": os.environ.get("ENVIRONMENT"),
-                    "workingDirectory": os.environ.get("WORKING_DIRECTORY"),
-                    "atomName": os.environ.get("ATOM_NAME"),
-                    "atomNameDR": os.environ.get("ATOM_NAME_DR")
-                    }
-        return env_dict
+    load_dotenv()
+    env = {"baseUrl": os.environ.get("BOOMI_BASE_URL"),
+           "accountId": os.environ.get("BOOMI_ACCOUNT_ID"),
+           "username": os.environ.get("BOOMI_USERNAME"),
+           "password": os.environ.get("BOOMI_PASSWORD"),
+           "environmentName": os.environ.get("BOOMI_ENVIRONMENT_NAME"),
+           "workingDirectory": os.environ.get("WORKING_DIRECTORY"),
+           "atomName": os.environ.get("BOOMI_ATOM_NAME"),
+           "atomNameDR": os.environ.get("BOOMI_ATOM_NAME_DR")
+           }
+    return env
 
 
 def set_release():

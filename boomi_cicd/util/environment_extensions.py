@@ -7,24 +7,20 @@ from boomi_cicd.util.common_util import *
 namespaces = {'bns': 'http://api.platform.boomi.com/'}  # namespaces for xml parsing
 
 
-def parse_connection_extensions(connection_array, json_response):
+def parse_connection_extensions(connection_array, xml_response):
     # Parse connector from json response
     # ConnectionOverride can be an object or an array of objects
     # TODO: Consider using xml directly instead of converting to json
-    connections = json_response["bns:Component"]["bns:processOverrides"]["Overrides"]["Connections"]
-    connection_override = connections.get("ConnectionOverride")
-    # check if ConnectionOverride is an object or an array
-    if isinstance(connection_override, list):
-        connection_overrides = connection_override
-    else:
-        connection_overrides = [connection_override]
+    root = ET.fromstring(xml_response)
 
-    for connection_override in connection_overrides:
-        # check if the connection already exists. If not, add it.
-        existing_connection = next((conn for conn in connection_array if conn["id"] == connection_override["id"]), None)
+    for connection_override in root.findall(".//bns:processOverrides/Overrides/Connections/ConnectionOverride",
+                                            namespaces):
+        existing_connection = next(
+            (conn for conn in connection_array if conn["id"] == connection_override.attrib["id"]), None)
+
         if existing_connection is None:
             new_connection = {
-                "id": connection_override["id"],
+                "id": connection_override.attrib["id"],
                 "name": "",  # TODO: query id to get connector name
                 "@type": "Connection",
                 "field": []
@@ -34,17 +30,19 @@ def parse_connection_extensions(connection_array, json_response):
         for conn in connection_array:
             # Look for the connection in the array
             # Add fields to the connection
-            if conn["id"] == connection_override["id"]:
+            # TODO: Stopped here
+            if conn["id"] == connection_override.attrib["id"]:
+                print("hi")
                 connection_fields = conn["field"]
-                override_fields = connection_override.get("field", [])
-                for field in override_fields:
-                    if field["overrideable"] == "true":
-                        existing_field = next((fld for fld in connection_fields if fld["id"] == field["id"]), None)
+                for field in connection_override.findall("field"):
+                    if field.attrib["overrideable"] == "true":
+                        existing_field = next((fld for fld in connection_fields if fld["id"] == field.attrib["id"]),
+                                              None)
                         if existing_field is None:
                             new_field_object = {
                                 "@type": "field",
-                                "id": field["id"],
-                                "lable": field["label"],
+                                "id": field.attrib["id"],
+                                "lable": field.attrib["label"],
                                 "value": "",
                                 "usesEncryption": False,
                                 "useDefault": False
@@ -58,31 +56,19 @@ def parse_dpp_extensions(dpp_list, xml_response):
     root = ET.fromstring(xml_response)
 
     for prop_override in root.findall(".//bns:processOverrides/Overrides/Properties/PropertyOverride", namespaces):
-        # TODO: Stopped here.
-        existing_dpp = next((dpp for dpp in dpp_list if dpp["name"] == prop_override.attrib["name"]), None)
+        existing_dpp = next((dpp for dpp in dpp_list if dpp == prop_override.attrib["name"]), None)
         if existing_dpp is None:
             new_dpp = {
                 "@type": "",
                 "name": prop_override.attrib["name"],
                 "value": ""
             }
-            dpp_list.append(prop_override.attrib["name"])
+            dpp_list.append(new_dpp)
 
     return dpp_list
 
 
-# {
-#                "@type": "",
-#                "property": [
-#                    {
-#                        "@type": "",
-#                        "name": "ENV"
-#                    }
-#                ]
-#            }
-
 def parse_pp_extensions(pp_dict, xml_response):
-    # TODO: Parse Process properties extensions
     root = ET.fromstring(xml_response)
     for process_prop_override in root.findall(
             ".//bns:processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent",
