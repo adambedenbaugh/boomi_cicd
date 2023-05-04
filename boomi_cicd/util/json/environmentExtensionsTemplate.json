@@ -12,6 +12,10 @@
     "@type": "OverrideProperties",
     "property": []
   },
+  "crossReferences": {
+    "@type": "CrossReferences",
+    "crossReference": []
+  },
   "environmentId": "",
   "extensionGroupId": "",
   "id": "",

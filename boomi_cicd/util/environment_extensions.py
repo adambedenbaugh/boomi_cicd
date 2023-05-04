@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 from boomi_cicd.util.common_util import *
+from boomi_cicd.util.component import query_component
 
 # https://help.boomi.com/bundle/developer_apis/page/int-Environment_extensions_object.html
 
@@ -8,17 +9,12 @@ namespaces = {'bns': 'http://api.platform.boomi.com/'}  # namespaces for xml par
 
 
 def parse_connection_extensions(connection_array, xml_response):
-    # Parse connector from json response
-    # ConnectionOverride can be an object or an array of objects
-    # TODO: Consider using xml directly instead of converting to json
     root = ET.fromstring(xml_response)
+    existing_connection_id = {conn["id"] for conn in connection_array}
 
     for connection_override in root.findall(".//bns:processOverrides/Overrides/Connections/ConnectionOverride",
                                             namespaces):
-        existing_connection = next(
-            (conn for conn in connection_array if conn["id"] == connection_override.attrib["id"]), None)
-
-        if existing_connection is None:
+        if connection_override.attrib["id"] not in existing_connection_id:
             new_connection = {
                 "id": connection_override.attrib["id"],
                 "name": "",  # TODO: query id to get connector name
@@ -30,9 +26,7 @@ def parse_connection_extensions(connection_array, xml_response):
         for conn in connection_array:
             # Look for the connection in the array
             # Add fields to the connection
-            # TODO: Stopped here
             if conn["id"] == connection_override.attrib["id"]:
-                print("hi")
                 connection_fields = conn["field"]
                 for field in connection_override.findall("field"):
                     if field.attrib["overrideable"] == "true":
@@ -73,8 +67,8 @@ def parse_pp_extensions(pp_dict, xml_response):
     for process_prop_override in root.findall(
             ".//bns:processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent",
             namespaces):
-        existing_pp = next((pp for pp in pp_dict if pp["id"] == process_prop_override.attrib["componentId"]), None)
-        if existing_pp is None:
+        existing_pp_ids = {pp["id"] for pp in pp_dict}
+        if process_prop_override.attrib["componentId"] not in existing_pp_ids:
             new_pp = {
                 "id": process_prop_override.attrib["componentId"],
                 "name": "",  # TODO: query id to get connector name
@@ -107,39 +101,51 @@ def parse_pp_extensions(pp_dict, xml_response):
     return pp_dict
 
 
-# "processProperties": {
-#                 "@type": "OverrideProcessProperties",
-#                 "ProcessProperty": [
-#                     {
-#                         "@type": "OverrideProcessProperty",
-#                         "ProcessPropertyValue": [
-#                             {
-#                                 "@type": "ProcessPropertyValue",
-#                                 "label": "Process Property #1",
-#                                 "key": "f056e8a0-cab0-4cc6-bc11-59deba9aca50",
-#                                 "value": "",
-#                                 "encryptedValueSet": false,
-#                                 "useDefault": true
-#                             }
-#                         ],
-#                         "id": "4ffd1564-c1d0-4e45-bd8d-3a2e6bc44850",
-#                         "name": "sleep"
-#                     }
-#                 ]
-#             },
+def parse_cross_reference_extensions(env, cross_reference, xml_response):
+    root = ET.fromstring(xml_response)
+    cr_ids = {cr["id"] for cr in cross_reference}
+    for cross_reference_override in root.findall(
+            ".//bns:processOverrides/Overrides/CrossReferenceOverrides/CrossReferenceOverride",
+            namespaces):
+        if cross_reference_override.attrib["id"] not in cr_ids:
+            new_cross_reference = {
+                "@type": "CrossReference",
+                "CrossReferenceRows": {
+                    "@type": "",
+                    "row": []
+                },
+                "id": cross_reference_override.attrib["id"],
+                "overrideValues": True,
+                "name": cross_reference_override.attrib["name"]
+            }
+
+            cross_reference_xml = query_component(env, cross_reference_override.attrib["id"])
+            cross_reference_root = ET.fromstring(cross_reference_xml)
+            for cross_reference_rows in cross_reference_root.findall(
+                    ".//bns:object/CrossRefTable/Rows/row",
+                    namespaces):
+                new_row = {
+                    "@type": "CrossReferenceRow"
+                }
+                for cross_reference_col in cross_reference_rows.findall(".//ref"):
+                    col_index = int(cross_reference_col.attrib["colIdx"]) + 1
+                    new_row["ref" + str(col_index)] = cross_reference_col.attrib["value"]
+                new_cross_reference["CrossReferenceRows"]["row"].append(new_row)
+
+            cross_reference.append(new_cross_reference)
+
+    return cross_reference
+
 
 def get_environment_extensions(env, environment_id):
     resource_path = "/EnvironmentExtensions/{}".format(environment_id)
     response = requests_get(env, resource_path)
+
     return json.loads(response.text)
 
 
 def update_environment_extensions(env: dict, environment_id: str, payload: dict):
     resource_path = "/EnvironmentExtensions/{}/update}".format(environment_id)
-
-    # environment_query = os.path.join(env["workingDirectory"], "boomi_cicd/util/json/atomQuery.json")
-    #
-    # payload = parse_json(environment_query)
     response = requests_post(env, resource_path, payload)
 
     return json.loads(response.text)
