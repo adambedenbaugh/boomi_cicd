@@ -3,7 +3,8 @@ from boomi_cicd.util.environment_extensions import *
 # The environment_extensions_template.py script is used to generate a template for environment extensions
 # based on the processes within the release json. Once the template is generated and populated, it can be
 # used with the environment_extensions_update.py script to update the environment extensions for the
-# environment.
+# environment. It currently supports creating a template for connections, process properties,
+# dynamic process properties, and a cross-reference table.
 
 
 # Open environment variables

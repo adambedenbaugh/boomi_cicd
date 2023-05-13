@@ -10,13 +10,6 @@ from boomi_cicd.util.constants import *
 
 # from ratelimit import limits, sleep_and_retry  # TODO: Figure out why this is not importing correctly
 
-# Set Parse for Command Line Options
-# parser = argparse.ArgumentParser()
-# parser.add_argument("-e", "--env")
-# parser.add_argument("-r", "--release")
-# args = parser.parse_args()
-# print(args)
-
 # Logging conf
 logging.basicConfig(
     stream=sys.stdout,
@@ -25,6 +18,17 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger()
+
+header = """
+    __                                                __
+   / /_  ____  ____  ____ ___  (_)   _____(_)________/ /
+  / __ \/ __ \/ __ \/ __ `__ \/ /   / ___/ / ___/ __  /
+ / /_/ / /_/ / /_/ / / / / / / /   / /__/ / /__/ /_/ /
+/_.___/\____/\____/_/ /_/ /_/_/____\___/_/\___/\__,_/
+                             /_____/                              
+"""
+for line in header.splitlines():
+    logger.info(line)
 
 
 def parse_json(file_path):
@@ -43,7 +47,6 @@ def parse_release(file_path):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-e", "--env")
     parser.add_argument("-r", "--release")
     args = parser.parse_args()
     return args
@@ -58,7 +61,8 @@ def set_env():
            "environmentName": os.environ.get("BOOMI_ENVIRONMENT_NAME"),
            "workingDirectory": os.environ.get("WORKING_DIRECTORY"),
            "atomName": os.environ.get("BOOMI_ATOM_NAME"),
-           "atomNameDR": os.environ.get("BOOMI_ATOM_NAME_DR")
+           "atomNameDR": os.environ.get("BOOMI_ATOM_NAME_DR"),
+           "gitRepoURL": os.environ.get("BOOMI_COMPONENT_GIT_URL")
            }
     return env
 
