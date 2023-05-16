@@ -5,10 +5,9 @@ import sys
 
 import requests
 from dotenv import load_dotenv
+from ratelimit import limits, sleep_and_retry
 
 from boomi_cicd.util.constants import *
-
-# from ratelimit import limits, sleep_and_retry  # TODO: Figure out why this is not importing correctly
 
 # Logging conf
 logging.basicConfig(
@@ -81,8 +80,8 @@ def log(message):
     logger.info(message)
 
 
-# @sleep_and_retry
-# @limits(calls=CALLS, period=RATE_LIMIT)
+@sleep_and_retry
+@limits(calls=CALLS, period=RATE_LIMIT)
 def check_limit():
     """ Empty function to check for calls to Atomsphere API """
     return

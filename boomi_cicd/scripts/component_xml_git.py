@@ -57,8 +57,13 @@ for release in releases["pipelines"]:
 
     # Check if the packaged component's name has changed. If so, rename the folder
     # Name within the release file is used as the folder name.
-    if component_id in file_components and process_name != file_components[component_id]:
-        logger.info(f"Process name changed. Original: {file_components[component_id]}. New: {process_name}")
+    if (
+            component_id in file_components
+            and process_name != file_components[component_id]
+    ):
+        logger.info(
+            f"Process name changed. Original: {file_components[component_id]}. New: {process_name}"
+        )
         cloned_repo.git.mv(f"{file_components[component_id]}", f"{process_name}")
         file_components[component_id] = process_name
 
@@ -86,20 +91,27 @@ for release in releases["pipelines"]:
         component_file_name = f"{component_name}.xml"
         component_info_names.add(component_file_name)
 
-        if component_info_id in component_refs and component_file_name != component_refs[component_info_id]:
+        if (
+                component_info_id in component_refs
+                and component_file_name != component_refs[component_info_id]
+        ):
             # Check if file needs to be renamed
-            logger.info(f"Component name changed. Original: {component_refs[component_info_id]}. New: {component_name}")
-            cloned_repo.git.mv(f"{process_name}/{component_refs[component_info_id]}",
-                               f"{process_name}/{component_file_name}")
+            logger.info(
+                f"Component name changed. Original: {component_refs[component_info_id]}. New: {component_name}"
+            )
+            cloned_repo.git.mv(
+                f"{process_name}/{component_refs[component_info_id]}",
+                f"{process_name}/{component_file_name}",
+            )
 
         # Write component xml to file
         with open(f"{process_base_dir}/{component_file_name}", "w") as f:
-            f.write(minidom.parseString(component_xml).toprettyxml(indent='  '))
+            f.write(minidom.parseString(component_xml).toprettyxml(indent="  "))
 
         component_refs[component_info_id] = component_file_name
 
     # Delete files that are not in the component manifest and romove from component_refs of the packaged component
-    for (dirpath, dirnames, filenames) in walk(process_base_dir):
+    for dirpath, dirnames, filenames in walk(process_base_dir):
         for filename in filenames:
             if filename not in component_info_names and filename != ".componentRef":
                 cloned_repo.git.rm(f"{process_name}/{filename}")
@@ -109,7 +121,7 @@ for release in releases["pipelines"]:
 
 # Commit all changes
 cloned_repo.index.add("*")
-commit_message = "Commit from Boomi CICD on {}".format(datetime.datetime.now())
+commit_message = "Commit from Boomi CICD on {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 logger.info(f"Commiting changes: {commit_message}")
 cloned_repo.index.commit(commit_message)
 cloned_repo.remote().push()
