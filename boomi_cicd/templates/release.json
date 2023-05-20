@@ -1,12 +1,24 @@
 {
   "pipelines": [
     {
-      "processName": "Process Name",
+      "processName": "An Example Batch Process",
+      "packageVersion": "2.0",
+      "componentId": "83d6013f-96f5-4a75-a97b-f4934b0ec2e8",
+      "notes": "This is an example set of notes",
+      "schedule": "0 0 1 * * * ; 30 0 2-7 * * *"
+    },
+    {
+      "processName": "An Example Listener Process",
       "packageVersion": "1.0",
-      "componentId": "",
-      "notes": "",
-      "scheduled": "",
+      "componentId": "b24f310b-6a66-4e0d-97a3-26f1e812b79a",
+      "notes": "This is an example set of notes",
       "listenerStatus": "RUNNING"
+    },
+    {
+      "processName": "An Example Custom Library",
+      "componentId": "7bd40730-6df3-4ba9-b4b2-ed9153dbca6d",
+      "packageVersion": "1.0",
+      "notes": "Initial deployment"
     }
   ]
 }
