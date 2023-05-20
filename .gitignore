@@ -9,3 +9,6 @@ tests/.pytest_cache
 venv
 /.env/
 .env
+cloned_repo
+/profile.html
+/profile.json

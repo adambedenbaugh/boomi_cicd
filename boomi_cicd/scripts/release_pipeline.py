@@ -1,35 +1,31 @@
 from boomi_cicd.util.atom import query_atom
 from boomi_cicd.util.deployed_package import *
-from boomi_cicd.util.environment import *
-from boomi_cicd.util.packaged_component import *
-from boomi_cicd.util.process_schedules import update_process_schedules, query_process_schedules
+from boomi_cicd.util.environment import query_environment
+from boomi_cicd.util.packaged_component import query_packaged_component, create_packaged_component
+from boomi_cicd.util.process_schedules import query_process_schedules, update_process_schedules
 
-# print(os.getcwd())
-# Open environment variables
-# command line: -e
-env = set_env()
 # Open release json
 # command line: -r
 releases = set_release()
 
-environment_id = query_environment(env)
-atom_id = query_atom(env, env["atomName"])
+environment_id = query_environment()
+atom_id = query_atom(boomi_cicd.ATOM_NAME)
 
 for release in releases["pipelines"]:
     component_id = release["componentId"]
     process_name = release["processName"]
     package_version = release["packageVersion"]
 
-    package_id = query_packaged_component(env, release)
+    package_id = query_packaged_component(release)
 
     if not package_id:
-        package_id = create_packaged_component(env, release)
+        package_id = create_packaged_component(release)
 
-    package_deployed = query_deployed_package(env, release, package_id, environment_id)
+    package_deployed = query_deployed_package(package_id, environment_id)
     if not package_deployed:
-        deployment_id = create_deployed_package(env, release, package_id, environment_id)
-        # delete_deployed_package(env, deployment_id)
+        deployment_id = create_deployed_package(release, package_id, environment_id)
+        delete_deployed_package(deployment_id)
 
     if "schedule" in release:
-        conceptual_id = query_process_schedules(env, atom_id, component_id)
-        update_process_schedules(env, component_id, conceptual_id, atom_id, release["schedule"])
+        conceptual_id = query_process_schedules(atom_id, component_id)
+        update_process_schedules(component_id, conceptual_id, atom_id, release["schedule"])

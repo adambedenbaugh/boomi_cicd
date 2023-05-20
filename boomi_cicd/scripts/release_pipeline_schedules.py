@@ -1,21 +1,26 @@
-from boomi_cicd.util.atom import *
-from boomi_cicd.util.process_schedules import *
+import boomi_cicd
+from boomi_cicd.util.atom import query_atom
+from boomi_cicd.util.common_util import set_release
+from boomi_cicd.util.process_schedules import (
+    query_process_schedules,
+    update_process_schedules,
+)
 
-# Open environment variables
-# command line: -e
-env = set_env()
 # Open release json
-# command line: -r
 releases = set_release()
 
 # Get atom id
-atom_id = query_atom(env, env["atomName"])
+atom_id = query_atom(boomi_cicd.ATOM_NAME)
 
 for release in releases["pipelines"]:
     component_id = release["componentId"]
 
     # Get conceptual id of deployed process
-    conceptual_id = query_process_schedules(env, atom_id, component_id)
+    conceptual_id = query_process_schedules(atom_id, component_id)
 
-    update_process_schedules(env, component_id, conceptual_id, atom_id,
-                             release["schedule"] if "schedule" in release else None)
+    update_process_schedules(
+        component_id,
+        conceptual_id,
+        atom_id,
+        release["schedule"] if "schedule" in release else None,
+    )

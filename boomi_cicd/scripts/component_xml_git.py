@@ -34,16 +34,13 @@ def set_file_refs(location, file_refs):
             f.write("{}={}\n".format(file_ref, file_refs[file_ref]))
 
 
-# Open environment variables
-env = set_env()
 # Open release json
-# command line: -r
 releases = set_release()
 
 base_dir = "cloned_repo"
 # Clone repo
-# cloned_repo = Repo.clone_from(env["gitRepoURL"], "cloned_repo")
-cloned_repo = Repo("cloned_repo")
+cloned_repo = Repo.clone_from(boomi_cicd.COMPONENT_GIT_URL, "cloned_repo")
+# cloned_repo = Repo("cloned_repo")
 
 logger.info(f"Git Repo Status: {cloned_repo.git.status()}".replace("\n", " "))
 
@@ -74,16 +71,16 @@ for release in releases["pipelines"]:
         logger.info(f"Created component_refs: {component_refs}")
 
     # Parse xml for component id
-    packaged_component_id = query_packaged_component(env, release)
-    packaged_manifest = get_package_component_manifest(env, packaged_component_id)
+    packaged_component_id = query_packaged_component(release)
+    packaged_manifest = get_package_component_manifest(packaged_component_id)
     root = ET.fromstring(packaged_manifest)
     component_info_names = set()
-    for component_info in root.findall(".//bns:componentInfo", namespaces):
+    for component_info in root.findall(".//bns:componentInfo", boomi_cicd.NAMESPACES):
         component_info_id = component_info.attrib["id"]
 
         # Query components
         # TODO: Update query_component to accept version.
-        component_xml = query_component(env, component_info_id)
+        component_xml = query_component(component_info_id)
 
         # Use the dict to know if a file should be updated or created.
         # Get the component name for the file name
@@ -121,9 +118,11 @@ for release in releases["pipelines"]:
 
 # Commit all changes
 cloned_repo.index.add("*")
-commit_message = "Commit from Boomi CICD on {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+commit_message = "Commit from Boomi CICD on {}".format(
+    datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+)
 logger.info(f"Commiting changes: {commit_message}")
 cloned_repo.index.commit(commit_message)
-cloned_repo.remote().push()
+cloned_repo.remote('origin').push('main')
 
 set_file_refs("cloned_repo", file_components)
