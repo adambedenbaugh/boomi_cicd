@@ -15,6 +15,8 @@ arguments (-r) or by defining the file with an environment varialble.
 ```bash
 # Example of setting a release file with a command line argument
 python boomi_cicd/scripts/releasePipeline.py -r <release-file-location>
+# or define the release file with an environment variable and do not pass any arguments
+python boomi_cicd/scripts/releasePipeline.py
 ```
 
 ## Pre-requistes
@@ -34,7 +36,7 @@ The project is broken into three sections.
 3. [templates](boomi_cicd/templates) - This directory contains the release pipeline templates. These templates can be
    used as-is or as a starting point for your own release pipeline.
 
-## Scripts
+## Example Scripts
 
 | Name                             | Description                                                                        |
 |----------------------------------|------------------------------------------------------------------------------------|
@@ -145,7 +147,15 @@ check if a package has been created, if not create one, and check if the package
 * [GitHub Actions](boomi_cicd/templates/github_actions/README_github_actions.md): TODO
 * [Jenkins](boomi_cicd/templates/jenkins/README_jenkins.md): TODO
 
-## READMEs for Additional Information
+## TODOs
 
-* [Utility Scripts](boomi_cicd/util/README_util.md)
-* [Release Pipeline Scripts](boomi_cicd/scripts/README_scripts.md)
+* Script for SonarQube integration.
+
+## Builds
+
+To build the docs, run the following command:
+
+```bash
+cd docs
+sphinx-build -b html . _build 
+```

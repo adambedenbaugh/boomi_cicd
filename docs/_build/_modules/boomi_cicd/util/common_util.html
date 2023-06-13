@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>boomi_cicd.util.common_util &mdash; boomi-cicd-cli-py 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            boomi-cicd-cli-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/Getting%20Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_scripts/Example%20CICD%20Scripts.html">Example CICD Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipelines/Release%20Pipeline%20Configuration.html">Release Pipeline Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/Modules.html">Modules</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">boomi-cicd-cli-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">boomi_cicd.util.common_util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for boomi_cicd.util.common_util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">ratelimit</span> <span class="kn">import</span> <span class="n">limits</span><span class="p">,</span> <span class="n">sleep_and_retry</span>
+<span class="kn">from</span> <span class="nn">retrying</span> <span class="kn">import</span> <span class="n">retry</span>
+
+<span class="kn">import</span> <span class="nn">boomi_cicd</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_HTTP_USER_AGENT&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Logging conf</span>
+    <span class="c1"># Azure DevOps already includes the date/time</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(levelname)-5s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2">.</span><span class="si">%(msecs)03d</span><span class="s2"> </span><span class="si">%(levelname)-5s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+        <span class="n">datefmt</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+
+<span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    __                                                __</span>
+<span class="s2">   / /_  ____  ____  ____ ___  (_)   _____(_)________/ /</span>
+<span class="s2">  / __ \/ __ \/ __ \/ __ `__ \/ /   / ___/ / ___/ __  /</span>
+<span class="s2"> / /_/ / /_/ / /_/ / / / / / / /   / /__/ / /__/ /_/ /</span>
+<span class="s2">/_.___/\____/\____/_/ /_/ /_/_/____\___/_/\___/\__,_/</span>
+<span class="s2">                             /_____/                              </span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="parse_json"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.parse_json">[docs]</a><span class="k">def</span> <span class="nf">parse_json</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a JSON file and return the parsed data.</span>
+
+<span class="sd">    :param file_path: The path to the JSON file.</span>
+<span class="sd">    :type file_path: str</span>
+<span class="sd">    :return: The parsed data from the JSON file.</span>
+<span class="sd">    :rtype: dict or list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">CLI_BASE_DIR</span><span class="p">,</span> <span class="n">file_path</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="parse_release"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.parse_release">[docs]</a><span class="k">def</span> <span class="nf">parse_release</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a release file and return the parsed data.</span>
+
+<span class="sd">    :param file_path: The path to the release file.</span>
+<span class="sd">    :type file_path: str</span>
+<span class="sd">    :return: The parsed data from the release file.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RELEASE_BASE_DIR</span><span class="p">,</span> <span class="n">file_path</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="parse_args"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.parse_args">[docs]</a><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Will parse arguments from the command line. Looks for a release file with a -r or --release argument.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="s2">&quot;--release&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">args</span></div>
+
+
+<div class="viewcode-block" id="set_release"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.set_release">[docs]</a><span class="k">def</span> <span class="nf">set_release</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the release data based on command-line arguments or environment variable.</span>
+
+<span class="sd">    This function retrieves the release data from either the command-line argument or the default configuration.</span>
+<span class="sd">    If the `--release` argument is provided, it reads the JSON data from the specified file path.</span>
+<span class="sd">    Otherwise, it reads the JSON data from the default release file path.</span>
+
+<span class="sd">    :return: The release data as a dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">release</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">release</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">release_file</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RELEASE_FILE</span>
+        <span class="k">return</span> <span class="n">parse_release</span><span class="p">(</span><span class="n">release_file</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_limit"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.check_limit">[docs]</a><span class="nd">@sleep_and_retry</span>
+<span class="nd">@limits</span><span class="p">(</span><span class="n">calls</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">CALLS</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_limit</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Empty function to limit the number of calls to the Atomsphere API.</span>
+
+<span class="sd">    This function is used as a decorator to enforce a rate limit on API calls. It ensures that the decorated function</span>
+<span class="sd">    is called within the specified rate limit.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="requests_get_xml"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.requests_get_xml">[docs]</a><span class="nd">@retry</span><span class="p">(</span>
+    <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">wait_fixed</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT_MILLISECONDS</span><span class="p">,</span>
+    <span class="n">retry_on_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">503</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">requests_get_xml</span><span class="p">(</span><span class="n">resource_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a GET request to the Atomsphere API and retrieve XML data.</span>
+
+<span class="sd">    :param resource_path: The resource path for the API endpoint.</span>
+<span class="sd">    :type resource_path: str</span>
+<span class="sd">    :return: The response object containing the XML data.</span>
+<span class="sd">    :rtype: requests.Response</span>
+<span class="sd">    :raises requests.HTTPError: If the GET request fails (non-2xx response). A 503 response will be retried up to 3 times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_limit</span><span class="p">()</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/xml&quot;</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ACCOUNT_ID</span> <span class="o">+</span> <span class="n">resource_path</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Response: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="requests_get"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.requests_get">[docs]</a><span class="nd">@retry</span><span class="p">(</span>
+    <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">wait_fixed</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT_MILLISECONDS</span><span class="p">,</span>
+    <span class="n">retry_on_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">503</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">requests_get</span><span class="p">(</span><span class="n">resource_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a GET request to the Atomsphere API and retrieve JSON data.</span>
+
+<span class="sd">    :param resource_path: The resource path for the API endpoint.</span>
+<span class="sd">    :type resource_path: str</span>
+<span class="sd">    :return: The response object containing the JSON data.</span>
+<span class="sd">    :rtype: requests.Response</span>
+<span class="sd">    :raises requests.HTTPError: If the GET request fails (non-2xx response).  A 503 response will be retried up to 3 times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_limit</span><span class="p">()</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ACCOUNT_ID</span> <span class="o">+</span> <span class="n">resource_path</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Response: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="requests_post"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.requests_post">[docs]</a><span class="nd">@retry</span><span class="p">(</span>
+    <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">wait_fixed</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT_MILLISECONDS</span><span class="p">,</span>
+    <span class="n">retry_on_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">503</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a POST request to the Atomsphere API with the specified payload.</span>
+
+<span class="sd">    :param resource_path: The resource path for the API endpoint.</span>
+<span class="sd">    :type resource_path: str</span>
+<span class="sd">    :param payload: The payload to be sent in the request body (as JSON).</span>
+<span class="sd">    :type payload: dict</span>
+<span class="sd">    :return: The response object containing the JSON response data.</span>
+<span class="sd">    :rtype: requests.Response</span>
+<span class="sd">    :raises requests.HTTPError: If the POST request fails (non-2xx response). A 503 response will be retried up to 3 times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_limit</span><span class="p">()</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Request: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)))</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ACCOUNT_ID</span> <span class="o">+</span> <span class="n">resource_path</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span>
+        <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">),</span>
+        <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Response: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="requests_delete"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.requests_delete">[docs]</a><span class="nd">@retry</span><span class="p">(</span>
+    <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">wait_fixed</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT_MILLISECONDS</span><span class="p">,</span>
+    <span class="n">retry_on_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">503</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">requests_delete</span><span class="p">(</span><span class="n">resource_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a DELETE request to the Atomsphere API.</span>
+
+<span class="sd">    :param resource_path: The resource path for the API endpoint.</span>
+<span class="sd">    :type resource_path: str</span>
+<span class="sd">    :return: The response object containing the JSON response data.</span>
+<span class="sd">    :rtype: requests.Response</span>
+<span class="sd">    :raises requests.HTTPError: If the DELETE request fails (non-2xx response). A 503 response will be retried up to 3 times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_limit</span><span class="p">()</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ACCOUNT_ID</span> <span class="o">+</span> <span class="n">resource_path</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Response: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Boomi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

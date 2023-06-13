@@ -4,6 +4,18 @@ from boomi_cicd.util.common_util import *
 # https://help.boomi.com/bundle/developer_apis/page/r-atm-Atom_object.html
 
 def query_atom(atom_name):
+    """
+    Query the Atom by name and retrieve its ID.
+
+    This function sends a request to the AtomSphere API to query for an Atom
+    with the specified name. If the Atom is found, then an ID is returned. If no
+    atom is found then an error is logged and the program exits.
+
+    :param atom_name: The name of the Atom to query.
+    :type atom_name: str
+    :return: The ID of the queried Atom.
+    :rtype: str
+    """
     resource_path = "/Atom/query"
     environment_query = os.path.join(boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/atomQuery.json")
 

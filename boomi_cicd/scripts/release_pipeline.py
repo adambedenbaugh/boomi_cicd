@@ -5,7 +5,6 @@ from boomi_cicd.util.packaged_component import query_packaged_component, create_
 from boomi_cicd.util.process_schedules import query_process_schedules, update_process_schedules
 
 # Open release json
-# command line: -r
 releases = set_release()
 
 environment_id = query_environment()
@@ -21,10 +20,10 @@ for release in releases["pipelines"]:
     if not package_id:
         package_id = create_packaged_component(release)
 
-    package_deployed = query_deployed_package(package_id, environment_id)
+    package_deployed = query_deployed_package(package_id, environment_id, False)
     if not package_deployed:
         deployment_id = create_deployed_package(release, package_id, environment_id)
-        delete_deployed_package(deployment_id)
+        # delete_deployed_package(deployment_id)
 
     if "schedule" in release:
         conceptual_id = query_process_schedules(atom_id, component_id)

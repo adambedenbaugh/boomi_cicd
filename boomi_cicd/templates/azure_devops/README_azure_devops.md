@@ -1,1 +1,0 @@
-# TODO: Explain how to configure Azure DevOps Release Pipelines
