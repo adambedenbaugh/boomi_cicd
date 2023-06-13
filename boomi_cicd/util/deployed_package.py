@@ -21,7 +21,7 @@ def create_deployed_package(release, package_id, environment_id):
     return json.loads(response.text)["deploymentId"]
 
 
-def query_deployed_package(package_id, environment_id):
+def query_deployed_package(package_id, environment_id, currently_deployed=True):
     resource_path = "/DeployedPackage/query"
     environment_query = "boomi_cicd/util/json/deployedPackageQuery.json"
     payload = parse_json(environment_query)
@@ -31,6 +31,11 @@ def query_deployed_package(package_id, environment_id):
     payload["QueryFilter"]["expression"]["nestedExpression"][1]["argument"][
         0
     ] = package_id
+    # If active is True, then query for active packages.
+    # If active is False, then query for all packages.
+    if currently_deployed:
+        active_status = {"argument": [True], "operator": "EQUALS", "property": "active"}
+        payload["QueryFilter"]["expression"]["nestedExpression"].append(active_status)
 
     response = requests_post(resource_path, payload)
 

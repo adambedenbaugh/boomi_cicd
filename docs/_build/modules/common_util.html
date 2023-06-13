@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>common_util &mdash; boomi-cicd-cli-py 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="component" href="component.html" />
+    <link rel="prev" title="change_listener_status" href="change_listener_status.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            boomi-cicd-cli-py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/Getting%20Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example_scripts/Example%20CICD%20Scripts.html">Example CICD Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipelines/Release%20Pipeline%20Configuration.html">Release Pipeline Configuration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="Modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atom.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="change_listener_status.html">change_listener_status</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">common_util</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.check_limit"><code class="docutils literal notranslate"><span class="pre">check_limit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.parse_json"><code class="docutils literal notranslate"><span class="pre">parse_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.parse_release"><code class="docutils literal notranslate"><span class="pre">parse_release()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.requests_delete"><code class="docutils literal notranslate"><span class="pre">requests_delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.requests_get"><code class="docutils literal notranslate"><span class="pre">requests_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.requests_get_xml"><code class="docutils literal notranslate"><span class="pre">requests_get_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.requests_post"><code class="docutils literal notranslate"><span class="pre">requests_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boomi_cicd.util.common_util.set_release"><code class="docutils literal notranslate"><span class="pre">set_release()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component_xml.html">component_xml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployed_package.html">deployed_package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html">environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment_extensions.html">environment_extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package_component_manifest.html">package_component_manifest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packaged_component.html">packaged_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule_status.html">process_schedule_status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedules.html">process_schedules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">boomi-cicd-cli-py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">common_util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/common_util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-boomi_cicd.util.common_util">
+<span id="common-util"></span><h1>common_util<a class="headerlink" href="#module-boomi_cicd.util.common_util" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.check_limit">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">check_limit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#check_limit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.check_limit" title="Permalink to this definition"></a></dt>
+<dd><p>Empty function to limit the number of calls to the Atomsphere API.</p>
+<p>This function is used as a decorator to enforce a rate limit on API calls. It ensures that the decorated function
+is called within the specified rate limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.parse_args">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.parse_args" title="Permalink to this definition"></a></dt>
+<dd><p>Will parse arguments from the command line. Looks for a release file with a -r or –release argument.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.parse_json">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">parse_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#parse_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.parse_json" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a JSON file and return the parsed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to the JSON file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parsed data from the JSON file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.parse_release">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">parse_release</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#parse_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.parse_release" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a release file and return the parsed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path to the release file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parsed data from the release file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.requests_delete">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">requests_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#requests_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.requests_delete" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a DELETE request to the Atomsphere API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource_path</strong> (<em>str</em>) – The resource path for the API endpoint.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response object containing the JSON response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>requests.Response</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the DELETE request fails (non-2xx response). A 503 response will be retried up to 3 times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.requests_get">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">requests_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#requests_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.requests_get" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a GET request to the Atomsphere API and retrieve JSON data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource_path</strong> (<em>str</em>) – The resource path for the API endpoint.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response object containing the JSON data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>requests.Response</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the GET request fails (non-2xx response).  A 503 response will be retried up to 3 times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.requests_get_xml">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">requests_get_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#requests_get_xml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.requests_get_xml" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a GET request to the Atomsphere API and retrieve XML data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource_path</strong> (<em>str</em>) – The resource path for the API endpoint.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response object containing the XML data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>requests.Response</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the GET request fails (non-2xx response). A 503 response will be retried up to 3 times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.requests_post">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">requests_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#requests_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.requests_post" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a POST request to the Atomsphere API with the specified payload.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource_path</strong> (<em>str</em>) – The resource path for the API endpoint.</p></li>
+<li><p><strong>payload</strong> (<em>dict</em>) – The payload to be sent in the request body (as JSON).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response object containing the JSON response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>requests.Response</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the POST request fails (non-2xx response). A 503 response will be retried up to 3 times.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="boomi_cicd.util.common_util.set_release">
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.common_util.</span></span><span class="sig-name descname"><span class="pre">set_release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/common_util.html#set_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.common_util.set_release" title="Permalink to this definition"></a></dt>
+<dd><p>Set the release data based on command-line arguments or environment variable.</p>
+<p>This function retrieves the release data from either the command-line argument or the default configuration.
+If the <cite>–release</cite> argument is provided, it reads the JSON data from the specified file path.
+Otherwise, it reads the JSON data from the default release file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The release data as a dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="change_listener_status.html" class="btn btn-neutral float-left" title="change_listener_status" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="component.html" class="btn btn-neutral float-right" title="component" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Boomi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -46,7 +46,7 @@ def update_process_schedules(component_id, conceptual_id, atom_id, schedules):
 
         for schedule in schedules:
             split_schedule = schedule.strip().split(" ")
-            if len(split_schedule) is not 6:
+            if len(split_schedule) != 6:
                 logging.error(
                     f"Invalid schedule format. Format: {schedule}. Arguments passed: {len(split_schedule)}. "
                     f"Arguments expected: 6."
