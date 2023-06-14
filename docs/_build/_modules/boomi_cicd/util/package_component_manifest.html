@@ -76,6 +76,15 @@
 
 
 <div class="viewcode-block" id="get_package_component_manifest"><a class="viewcode-back" href="../../../modules/package_component_manifest.html#boomi_cicd.util.package_component_manifest.get_package_component_manifest">[docs]</a><span class="k">def</span> <span class="nf">get_package_component_manifest</span><span class="p">(</span><span class="n">packaged_component_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the manifest of a packaged component. This will include a list of components and their versions that are</span>
+<span class="sd">    packaged within the packaged component.</span>
+
+<span class="sd">    :param packaged_component_id: The ID of the packaged component.</span>
+<span class="sd">    :type packaged_component_id: str</span>
+<span class="sd">    :return: The manifest of the packaged component.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/PackagedComponentManifest/</span><span class="si">{</span><span class="n">packaged_component_id</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
 

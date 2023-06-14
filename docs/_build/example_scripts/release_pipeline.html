@@ -102,27 +102,28 @@ schedule is defined, then the schedule will be set to the desired schedule.</p>
 <span class="linenos"> 7</span><span class="c1"># Open release json</span>
 <span class="linenos"> 8</span><span class="n">releases</span> <span class="o">=</span> <span class="n">set_release</span><span class="p">()</span>
 <span class="linenos"> 9</span>
-<span class="linenos">10</span><span class="n">environment_id</span> <span class="o">=</span> <span class="n">query_environment</span><span class="p">()</span>
+<span class="linenos">10</span><span class="n">environment_id</span> <span class="o">=</span> <span class="n">query_environment</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ENVIRONMENT_NAME</span><span class="p">)</span>
 <span class="linenos">11</span><span class="n">atom_id</span> <span class="o">=</span> <span class="n">query_atom</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ATOM_NAME</span><span class="p">)</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="k">for</span> <span class="n">release</span> <span class="ow">in</span> <span class="n">releases</span><span class="p">[</span><span class="s2">&quot;pipelines&quot;</span><span class="p">]:</span>
 <span class="linenos">14</span>    <span class="n">component_id</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]</span>
 <span class="linenos">15</span>    <span class="n">process_name</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;processName&quot;</span><span class="p">]</span>
 <span class="linenos">16</span>    <span class="n">package_version</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>    <span class="n">package_id</span> <span class="o">=</span> <span class="n">query_packaged_component</span><span class="p">(</span><span class="n">release</span><span class="p">)</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">package_id</span><span class="p">:</span>
-<span class="linenos">21</span>        <span class="n">package_id</span> <span class="o">=</span> <span class="n">create_packaged_component</span><span class="p">(</span><span class="n">release</span><span class="p">)</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span>    <span class="n">package_deployed</span> <span class="o">=</span> <span class="n">query_deployed_package</span><span class="p">(</span><span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="linenos">24</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">package_deployed</span><span class="p">:</span>
-<span class="linenos">25</span>        <span class="n">deployment_id</span> <span class="o">=</span> <span class="n">create_deployed_package</span><span class="p">(</span><span class="n">release</span><span class="p">,</span> <span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">)</span>
-<span class="linenos">26</span>        <span class="c1"># delete_deployed_package(deployment_id)</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span>    <span class="k">if</span> <span class="s2">&quot;schedule&quot;</span> <span class="ow">in</span> <span class="n">release</span><span class="p">:</span>
-<span class="linenos">29</span>        <span class="n">conceptual_id</span> <span class="o">=</span> <span class="n">query_process_schedules</span><span class="p">(</span><span class="n">atom_id</span><span class="p">,</span> <span class="n">component_id</span><span class="p">)</span>
-<span class="linenos">30</span>        <span class="n">update_process_schedules</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">conceptual_id</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;schedule&quot;</span><span class="p">])</span>
+<span class="linenos">17</span>    <span class="n">notes</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="n">package_id</span> <span class="o">=</span> <span class="n">query_packaged_component</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">package_version</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">package_id</span><span class="p">:</span>
+<span class="linenos">22</span>        <span class="n">package_id</span> <span class="o">=</span> <span class="n">create_packaged_component</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">package_version</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">package_deployed</span> <span class="o">=</span> <span class="n">query_deployed_package</span><span class="p">(</span><span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="linenos">25</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">package_deployed</span><span class="p">:</span>
+<span class="linenos">26</span>        <span class="n">deployment_id</span> <span class="o">=</span> <span class="n">create_deployed_package</span><span class="p">(</span><span class="n">release</span><span class="p">,</span> <span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">)</span>
+<span class="linenos">27</span>        <span class="c1"># delete_deployed_package(deployment_id)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>    <span class="k">if</span> <span class="s2">&quot;schedule&quot;</span> <span class="ow">in</span> <span class="n">release</span><span class="p">:</span>
+<span class="linenos">30</span>        <span class="n">conceptual_id</span> <span class="o">=</span> <span class="n">query_process_schedules</span><span class="p">(</span><span class="n">atom_id</span><span class="p">,</span> <span class="n">component_id</span><span class="p">)</span>
+<span class="linenos">31</span>        <span class="n">update_process_schedules</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">conceptual_id</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;schedule&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <section id="required-environment-variables">

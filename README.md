@@ -8,9 +8,9 @@ designed to be used in a CI/CD
 pipeline. It will parse a release.json file, check if a package has been created, if not create one, and check if the
 package has been deployed, if not deploy it.
 
-The environment varialbes below must be set. The execution must also be set a release file by either adding a command
+The environment varialbes below must be set. A release file can be defined by either adding a command
 line
-arguments (-r) or by defining the file with an environment varialble.
+arguments (-r) or by defining the file with an environment varialble (BOOMI_CLI_RELEASE_FILE).
 
 ```bash
 # Example of setting a release file with a command line argument
@@ -30,7 +30,7 @@ The project is broken into three sections.
 
 1. [scripts](boomi_cicd/scripts) - This directory contains the scripts that will be executed within a CI/CD pipeline.
    The release_pipeline.py is the main script. There are additional example scripts that can be used as a starting point
-   for your own scripts.
+   for your own pipelines.
 2. [util](boomi_cicd/util) - This directory contains the utility scripts that are used by the scripts in the scripts
    directory.
 3. [templates](boomi_cicd/templates) - This directory contains the release pipeline templates. These templates can be

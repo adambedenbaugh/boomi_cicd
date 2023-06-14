@@ -93,17 +93,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-boomi_cicd.util.process_schedules">
-<span id="process-schedules"></span><h1>process_schedules<a class="headerlink" href="#module-boomi_cicd.util.process_schedules" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="process-schedules">
+<h1>process_schedules<a class="headerlink" href="#process-schedules" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://help.boomi.com/bundle/developer_apis/page/r-atm-Process_Schedules_object.html">Boomi AtomSphere API: Process Schedules Object</a></p>
+<span class="target" id="module-boomi_cicd.util.process_schedules"></span><dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.process_schedules.query_process_schedules">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.process_schedules.</span></span><span class="sig-name descname"><span class="pre">query_process_schedules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/process_schedules.html#query_process_schedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.process_schedules.query_process_schedules" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Query the process schedules to get the conceptual ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom_id</strong> (<em>str</em>) – The ID of the Atom.</p></li>
+<li><p><strong>process_id</strong> (<em>str</em>) – The ID of the process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conceptual ID of the process schedule.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>SystemExit: If the process is not deployed.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.process_schedules.update_process_schedules">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.process_schedules.</span></span><span class="sig-name descname"><span class="pre">update_process_schedules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conceptual_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedules</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/process_schedules.html#update_process_schedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.process_schedules.update_process_schedules" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Update the process schedules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_id</strong> (<em>str</em>) – The ID of the component.</p></li>
+<li><p><strong>conceptual_id</strong> (<em>str</em>) – The conceptual ID of the process schedule.</p></li>
+<li><p><strong>atom_id</strong> (<em>str</em>) – The ID of the Atom.</p></li>
+<li><p><strong>schedules</strong> (<em>str</em><em> or </em><em>None</em>) – The schedules to update. If empty, the schedules will be cleared.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the process schedules are updated successfully, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>SystemExit: If the schedule format is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

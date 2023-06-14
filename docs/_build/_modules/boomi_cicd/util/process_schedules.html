@@ -79,6 +79,17 @@
 
 
 <div class="viewcode-block" id="query_process_schedules"><a class="viewcode-back" href="../../../modules/process_schedules.html#boomi_cicd.util.process_schedules.query_process_schedules">[docs]</a><span class="k">def</span> <span class="nf">query_process_schedules</span><span class="p">(</span><span class="n">atom_id</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the process schedules to get the conceptual ID.</span>
+
+<span class="sd">    :param atom_id: The ID of the Atom.</span>
+<span class="sd">    :type atom_id: str</span>
+<span class="sd">    :param process_id: The ID of the process.</span>
+<span class="sd">    :type process_id: str</span>
+<span class="sd">    :return: The conceptual ID of the process schedule.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises: SystemExit: If the process is not deployed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/ProcessSchedules/query&quot;</span>
     <span class="n">process_schedule_query</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span> <span class="s2">&quot;boomi_cicd/util/json/processScheduleQuery.json&quot;</span>
@@ -103,6 +114,21 @@
 
 
 <div class="viewcode-block" id="update_process_schedules"><a class="viewcode-back" href="../../../modules/process_schedules.html#boomi_cicd.util.process_schedules.update_process_schedules">[docs]</a><span class="k">def</span> <span class="nf">update_process_schedules</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">conceptual_id</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">schedules</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update the process schedules.</span>
+
+<span class="sd">    :param component_id: The ID of the component.</span>
+<span class="sd">    :type component_id: str</span>
+<span class="sd">    :param conceptual_id: The conceptual ID of the process schedule.</span>
+<span class="sd">    :type conceptual_id: str</span>
+<span class="sd">    :param atom_id: The ID of the Atom.</span>
+<span class="sd">    :type atom_id: str</span>
+<span class="sd">    :param schedules: The schedules to update. If empty, the schedules will be cleared.</span>
+<span class="sd">    :type schedules: str or None</span>
+<span class="sd">    :return: True if the process schedules are updated successfully, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :raises: SystemExit: If the schedule format is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/ProcessSchedules/</span><span class="si">{}</span><span class="s2">/update&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conceptual_id</span><span class="p">)</span>
     <span class="n">process_schedule_updated</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span> <span class="s2">&quot;boomi_cicd/util/json/processScheduleUpdate.json&quot;</span>
@@ -141,14 +167,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;Schedule&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_variable</span><span class="p">]</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+    <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 
-    <span class="n">json_response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="c1"># if json_response[&quot;numberOfResults&quot;] == 0:</span>
-    <span class="c1">#     logging.error(&quot;Process is not deployed. Atom Name: {}, Process Id: {}&quot;.format(env[&quot;atomName&quot;], process_id))</span>
-    <span class="c1">#     sys.exit(1)</span>
-    <span class="c1"># conceptual_id = json.loads(response.text)[&quot;result&quot;][0][&quot;id&quot;]</span>
-    <span class="k">return</span> <span class="s2">&quot;to be replaced&quot;</span></div>
+    <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
 
            </div>

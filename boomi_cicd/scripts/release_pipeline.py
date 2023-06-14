@@ -7,18 +7,19 @@ from boomi_cicd.util.process_schedules import query_process_schedules, update_pr
 # Open release json
 releases = set_release()
 
-environment_id = query_environment()
+environment_id = query_environment(boomi_cicd.ENVIRONMENT_NAME)
 atom_id = query_atom(boomi_cicd.ATOM_NAME)
 
 for release in releases["pipelines"]:
     component_id = release["componentId"]
     process_name = release["processName"]
     package_version = release["packageVersion"]
+    notes = release.get("notes")
 
-    package_id = query_packaged_component(release)
+    package_id = query_packaged_component(component_id, package_version)
 
     if not package_id:
-        package_id = create_packaged_component(release)
+        package_id = create_packaged_component(component_id, package_version, notes)
 
     package_deployed = query_deployed_package(package_id, environment_id, False)
     if not package_deployed:

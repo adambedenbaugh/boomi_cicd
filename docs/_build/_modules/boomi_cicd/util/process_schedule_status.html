@@ -79,28 +79,63 @@
 
 
 <div class="viewcode-block" id="query_process_schedule_status"><a class="viewcode-back" href="../../../modules/process_schedule_status.html#boomi_cicd.util.process_schedule_status.query_process_schedule_status">[docs]</a><span class="k">def</span> <span class="nf">query_process_schedule_status</span><span class="p">(</span><span class="n">atom_id</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the process schedule status to check if the process is deployed.</span>
+
+<span class="sd">    :param atom_id: The ID of the Atom.</span>
+<span class="sd">    :type atom_id: str</span>
+<span class="sd">    :param process_id: The ID of the process.</span>
+<span class="sd">    :type process_id: str</span>
+<span class="sd">    :return: The conceptual ID of the deployed process.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises: SystemExit: If the process is not deployed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/ProcessScheduleStatus/query&quot;</span>
-    <span class="n">process_schedule_query</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span>
-                                          <span class="s2">&quot;boomi_cicd/util/json/processScheduleStatusQuery.json&quot;</span><span class="p">)</span>
+    <span class="n">process_schedule_query</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span>
+        <span class="s2">&quot;boomi_cicd/util/json/processScheduleStatusQuery.json&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">process_schedule_query</span><span class="p">)</span>
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_id</span>
-    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_id</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span>
+        <span class="mi">0</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">process_id</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 
     <span class="n">json_response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">json_response</span><span class="p">[</span><span class="s2">&quot;numberOfResults&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Process is not deployed. Atom Name: </span><span class="si">{}</span><span class="s2">, Process Id: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ATOM_NAME</span><span class="p">,</span> <span class="n">process_id</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;Process is not deployed. Atom Name: </span><span class="si">{}</span><span class="s2">, Process Id: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ATOM_NAME</span><span class="p">,</span> <span class="n">process_id</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">conceptual_id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">conceptual_id</span></div>
 
 
 <div class="viewcode-block" id="update_process_schedule_status"><a class="viewcode-back" href="../../../modules/process_schedule_status.html#boomi_cicd.util.process_schedule_status.update_process_schedule_status">[docs]</a><span class="k">def</span> <span class="nf">update_process_schedule_status</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">conceptual_id</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">,</span> <span class="n">enabled</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update the process schedule status.</span>
+
+<span class="sd">    :param component_id: The ID of the component.</span>
+<span class="sd">    :type component_id: str</span>
+<span class="sd">    :param conceptual_id: The conceptual ID of the process schedule.</span>
+<span class="sd">    :type conceptual_id: str</span>
+<span class="sd">    :param atom_id: The ID of the Atom.</span>
+<span class="sd">    :type atom_id: str</span>
+<span class="sd">    :param enabled: Indicates whether the process schedule should be enabled or disabled.</span>
+<span class="sd">    :type enabled: bool</span>
+<span class="sd">    :return: True if the process schedule status update is successful.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/ProcessScheduleStatus/</span><span class="si">{}</span><span class="s2">/update&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conceptual_id</span><span class="p">)</span>
-    <span class="n">process_schedule_updated</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span>
-                                            <span class="s2">&quot;boomi_cicd/util/json/processScheduleStatusUpdate.json&quot;</span><span class="p">)</span>
+    <span class="n">process_schedule_updated</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span>
+        <span class="s2">&quot;boomi_cicd/util/json/processScheduleStatusUpdate.json&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">process_schedule_updated</span><span class="p">)</span>
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;processId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">component_id</span>
@@ -108,14 +143,8 @@
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conceptual_id</span>
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enabled</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+    <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 
-    <span class="n">json_response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">json_response</span><span class="p">)</span>
-    <span class="c1"># if json_response[&quot;numberOfResults&quot;] == 0:</span>
-    <span class="c1">#     logging.error(&quot;Process is not deployed. Atom Name: {}, Process Id: {}&quot;.format(env[&quot;atomName&quot;], process_id))</span>
-    <span class="c1">#     sys.exit(1)</span>
-    <span class="c1"># conceptual_id = json.loads(response.text)[&quot;result&quot;][0][&quot;id&quot;]</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
 

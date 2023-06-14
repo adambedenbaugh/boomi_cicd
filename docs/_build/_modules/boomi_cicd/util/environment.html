@@ -78,14 +78,21 @@
 <span class="c1"># https://help.boomi.com/bundle/developer_apis/page/r-atm-Environment_object.html</span>
 
 
-<div class="viewcode-block" id="query_environment"><a class="viewcode-back" href="../../../modules/environment.html#boomi_cicd.util.environment.query_environment">[docs]</a><span class="k">def</span> <span class="nf">query_environment</span><span class="p">():</span>
+<div class="viewcode-block" id="query_environment"><a class="viewcode-back" href="../../../modules/environment.html#boomi_cicd.util.environment.query_environment">[docs]</a><span class="k">def</span> <span class="nf">query_environment</span><span class="p">(</span><span class="n">environment_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the Boomi environment by name to retrieve the environment ID.</span>
+
+<span class="sd">    :param environment_name: The name of the Boomi environment.</span>
+<span class="sd">    :type environment_name: str</span>
+<span class="sd">    :return: The environment ID.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :raises SystemExit: If the environment is not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/Environment/query&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
-    <span class="n">environment_query</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">WORKING_DIRECTORY</span><span class="p">,</span> <span class="s2">&quot;boomi_cicd/util/json/environmentQuery.json&quot;</span>
-    <span class="p">)</span>
+    <span class="n">environment_query</span> <span class="o">=</span> <span class="s2">&quot;boomi_cicd/util/json/environmentQuery.json&quot;</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">environment_query</span><span class="p">)</span>
-    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">boomi_cicd</span><span class="o">.</span><span class="n">ENVIRONMENT_NAME</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">environment_name</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 

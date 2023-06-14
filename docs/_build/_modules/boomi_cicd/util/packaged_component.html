@@ -78,15 +78,27 @@
 <span class="c1"># https://help.boomi.com/bundle/developer_apis/page/r-atm-Packaged_Component_object.html</span>
 
 
-<div class="viewcode-block" id="create_packaged_component"><a class="viewcode-back" href="../../../modules/packaged_component.html#boomi_cicd.util.packaged_component.create_packaged_component">[docs]</a><span class="k">def</span> <span class="nf">create_packaged_component</span><span class="p">(</span><span class="n">release</span><span class="p">):</span>
+<div class="viewcode-block" id="create_packaged_component"><a class="viewcode-back" href="../../../modules/packaged_component.html#boomi_cicd.util.packaged_component.create_packaged_component">[docs]</a><span class="k">def</span> <span class="nf">create_packaged_component</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">package_version</span><span class="p">,</span> <span class="n">notes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a packaged component.</span>
+
+<span class="sd">    :param component_id: The ID of the component.</span>
+<span class="sd">    :type component_id: str</span>
+<span class="sd">    :param package_version: The version of the package.</span>
+<span class="sd">    :type package_version: str</span>
+<span class="sd">    :param notes: Additional notes for the package.</span>
+<span class="sd">    :type notes: str</span>
+<span class="sd">    :return: The ID of the created package.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/PackagedComponent&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
     <span class="n">packaged_component_query</span> <span class="o">=</span> <span class="s2">&quot;boomi_cicd/util/json/createPackagedComponent.json&quot;</span>
 
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">packaged_component_query</span><span class="p">)</span>
-    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]</span>
-    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span>
-    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">component_id</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">package_version</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">notes</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 
@@ -94,29 +106,37 @@
     <span class="k">return</span> <span class="n">package_id</span></div>
 
 
-<div class="viewcode-block" id="query_packaged_component"><a class="viewcode-back" href="../../../modules/packaged_component.html#boomi_cicd.util.packaged_component.query_packaged_component">[docs]</a><span class="k">def</span> <span class="nf">query_packaged_component</span><span class="p">(</span><span class="n">release</span><span class="p">):</span>
+<div class="viewcode-block" id="query_packaged_component"><a class="viewcode-back" href="../../../modules/packaged_component.html#boomi_cicd.util.packaged_component.query_packaged_component">[docs]</a><span class="k">def</span> <span class="nf">query_packaged_component</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">package_version</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the packaged component to check if it has already been created.</span>
+
+<span class="sd">    :param component_id: The ID of the component.</span>
+<span class="sd">    :type component_id: str</span>
+<span class="sd">    :param package_version: The version of the package.</span>
+<span class="sd">    :type package_version: str</span>
+<span class="sd">    :return: The ID of the existing package, or an empty string if not found.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/PackagedComponent/query&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ComponentId: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">release</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;PackagedVersion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">release</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ComponentId: </span><span class="si">{</span><span class="n">component_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PackagedVersion: </span><span class="si">{</span><span class="n">package_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">packaged_component_query</span> <span class="o">=</span> <span class="s2">&quot;boomi_cicd/util/json/packagedComponentQuery.json&quot;</span>
 
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">packaged_component_query</span><span class="p">)</span>
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span>
         <span class="mi">0</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">component_id</span>
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span>
         <span class="mi">0</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">package_version</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests_post</span><span class="p">(</span><span class="n">resource_path</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 
     <span class="n">package_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;numberOfResults&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Packaged component has already been created. ComponentId: </span><span class="si">{}</span><span class="s2">, PackageId: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">release</span><span class="p">[</span><span class="s2">&quot;componentId&quot;</span><span class="p">],</span> <span class="n">release</span><span class="p">[</span><span class="s2">&quot;packageVersion&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Packaged component has already been created. ComponentId: </span><span class="si">{</span><span class="n">component_id</span><span class="si">}</span><span class="s2">, PackageId: </span><span class="si">{</span><span class="n">package_version</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="n">package_id</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;packageId&quot;</span><span class="p">]</span>
 

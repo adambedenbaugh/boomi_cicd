@@ -5,6 +5,17 @@ from boomi_cicd.util.common_util import *
 
 
 def query_process_schedules(atom_id, process_id):
+    """
+    Query the process schedules to get the conceptual ID.
+
+    :param atom_id: The ID of the Atom.
+    :type atom_id: str
+    :param process_id: The ID of the process.
+    :type process_id: str
+    :return: The conceptual ID of the process schedule.
+    :rtype: str
+    :raises: SystemExit: If the process is not deployed.
+    """
     resource_path = "/ProcessSchedules/query"
     process_schedule_query = os.path.join(
         boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/processScheduleQuery.json"
@@ -29,6 +40,21 @@ def query_process_schedules(atom_id, process_id):
 
 
 def update_process_schedules(component_id, conceptual_id, atom_id, schedules):
+    """
+    Update the process schedules.
+
+    :param component_id: The ID of the component.
+    :type component_id: str
+    :param conceptual_id: The conceptual ID of the process schedule.
+    :type conceptual_id: str
+    :param atom_id: The ID of the Atom.
+    :type atom_id: str
+    :param schedules: The schedules to update. If empty, the schedules will be cleared.
+    :type schedules: str or None
+    :return: True if the process schedules are updated successfully, False otherwise.
+    :rtype: bool
+    :raises: SystemExit: If the schedule format is invalid.
+    """
     resource_path = "/ProcessSchedules/{}/update".format(conceptual_id)
     process_schedule_updated = os.path.join(
         boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/processScheduleUpdate.json"
@@ -67,11 +93,6 @@ def update_process_schedules(component_id, conceptual_id, atom_id, schedules):
             else:
                 payload["Schedule"] = [json_variable]
 
-    response = requests_post(resource_path, payload)
+    requests_post(resource_path, payload)
 
-    json_response = json.loads(response.text)
-    # if json_response["numberOfResults"] == 0:
-    #     logging.error("Process is not deployed. Atom Name: {}, Process Id: {}".format(env["atomName"], process_id))
-    #     sys.exit(1)
-    # conceptual_id = json.loads(response.text)["result"][0]["id"]
-    return "to be replaced"
+    return True

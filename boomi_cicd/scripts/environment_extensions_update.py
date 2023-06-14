@@ -1,3 +1,4 @@
+import boomi_cicd
 from boomi_cicd.util.common_util import set_release
 from boomi_cicd.util.environment import query_environment
 from boomi_cicd.util.environment_extensions import update_environment_extensions
@@ -8,5 +9,5 @@ from boomi_cicd.util.environment_extensions import update_environment_extensions
 
 # Open environment extensions release json
 env_ext_release = set_release()
-environment_id = query_environment()
+environment_id = query_environment(boomi_cicd.ENVIRONMENT_NAME)
 update_environment_extensions(environment_id, env_ext_release)

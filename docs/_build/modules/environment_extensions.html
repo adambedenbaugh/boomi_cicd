@@ -98,32 +98,109 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-boomi_cicd.util.environment_extensions">
-<span id="environment-extensions"></span><h1>environment_extensions<a class="headerlink" href="#module-boomi_cicd.util.environment_extensions" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="environment-extensions">
+<h1>environment_extensions<a class="headerlink" href="#environment-extensions" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://help.boomi.com/bundle/developer_apis/page/int-Environment_extensions_object.html">Boomi AtomSphere API: Environment Extensions Object</a></p>
+<span class="target" id="module-boomi_cicd.util.environment_extensions"></span><dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.get_environment_extensions">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment_extensions.</span></span><span class="sig-name descname"><span class="pre">get_environment_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environment_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment_extensions.html#get_environment_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment_extensions.get_environment_extensions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Get the extensions for the specified environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>environment_id</strong> (<em>str</em>) – The ID of the environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The environment extensions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.parse_connection_extensions">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment_extensions.</span></span><span class="sig-name descname"><span class="pre">parse_connection_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment_extensions.html#parse_connection_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment_extensions.parse_connection_extensions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse the connection extensions from the Component XML response and update the connection array. The connection
+array is used when creating a template for environment extensions updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection_array</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The array of connections.</p></li>
+<li><p><strong>xml_response</strong> (<em>str</em>) – The XML response containing the connection extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated connection array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.parse_cross_reference_extensions">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment_extensions.</span></span><span class="sig-name descname"><span class="pre">parse_cross_reference_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cross_reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment_extensions.html#parse_cross_reference_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment_extensions.parse_cross_reference_extensions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse the cross-reference extensions from the Component XML response and update the cross-reference list.
+The cross-reference list is used when creating a template for environment extensions updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cross_reference</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The list of cross-references.</p></li>
+<li><p><strong>xml_response</strong> (<em>str</em>) – The XML response containing the cross-reference extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated cross-reference list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.parse_dpp_extensions">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment_extensions.</span></span><span class="sig-name descname"><span class="pre">parse_dpp_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dpp_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment_extensions.html#parse_dpp_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment_extensions.parse_dpp_extensions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse the DPP (Dynamic Process Property) extensions from the Component XML response and update the DPP list.
+The DPP list is used when creating a template for environment extensions updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dpp_list</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The list of DPPs.</p></li>
+<li><p><strong>xml_response</strong> (<em>str</em>) – The XML response containing the DPP extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated DPP list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.parse_pp_extensions">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment_extensions.</span></span><span class="sig-name descname"><span class="pre">parse_pp_extensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pp_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xml_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment_extensions.html#parse_pp_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment_extensions.parse_pp_extensions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Parse the process property extensions from the XML response and update the Process Property dictionary.
+The Process Property dictionary is used when creating a template for environment extensions updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pp_dict</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The dictionary of process properties.</p></li>
+<li><p><strong>xml_response</strong> (<em>str</em>) – The XML response containing the process property extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated process property dictionary.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment_extensions.update_environment_extensions">

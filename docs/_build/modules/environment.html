@@ -93,12 +93,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-boomi_cicd.util.environment">
-<span id="environment"></span><h1>environment<a class="headerlink" href="#module-boomi_cicd.util.environment" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="environment">
+<h1>environment<a class="headerlink" href="#environment" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://help.boomi.com/bundle/developer_apis/page/r-atm-Environment_object.html">Boomi AtomSphere API: Environment Object</a></p>
+<span class="target" id="module-boomi_cicd.util.environment"></span><dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.environment.query_environment">
-<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment.</span></span><span class="sig-name descname"><span class="pre">query_environment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment.html#query_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment.query_environment" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.environment.</span></span><span class="sig-name descname"><span class="pre">query_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environment_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/environment.html#query_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.environment.query_environment" title="Permalink to this definition"></a></dt>
+<dd><p>Query the Boomi environment by name to retrieve the environment ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>environment_name</strong> (<em>str</em>) – The name of the Boomi environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The environment ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SystemExit</strong> – If the environment is not found.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

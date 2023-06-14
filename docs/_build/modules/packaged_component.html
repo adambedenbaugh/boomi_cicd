@@ -94,17 +94,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-boomi_cicd.util.packaged_component">
-<span id="packaged-component"></span><h1>packaged_component<a class="headerlink" href="#module-boomi_cicd.util.packaged_component" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="packaged-component">
+<h1>packaged_component<a class="headerlink" href="#packaged-component" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://help.boomi.com/bundle/developer_apis/page/r-atm-Packaged_Component_object.html">Boomi AtomSphere API: Packaged Component Object</a></p>
+<span class="target" id="module-boomi_cicd.util.packaged_component"></span><dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.packaged_component.create_packaged_component">
-<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.packaged_component.</span></span><span class="sig-name descname"><span class="pre">create_packaged_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">release</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/packaged_component.html#create_packaged_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.packaged_component.create_packaged_component" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.packaged_component.</span></span><span class="sig-name descname"><span class="pre">create_packaged_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/packaged_component.html#create_packaged_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.packaged_component.create_packaged_component" title="Permalink to this definition"></a></dt>
+<dd><p>Create a packaged component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_id</strong> (<em>str</em>) – The ID of the component.</p></li>
+<li><p><strong>package_version</strong> (<em>str</em>) – The version of the package.</p></li>
+<li><p><strong>notes</strong> (<em>str</em>) – Additional notes for the package.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the created package.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.packaged_component.query_packaged_component">
-<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.packaged_component.</span></span><span class="sig-name descname"><span class="pre">query_packaged_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">release</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/packaged_component.html#query_packaged_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.packaged_component.query_packaged_component" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.packaged_component.</span></span><span class="sig-name descname"><span class="pre">query_packaged_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/packaged_component.html#query_packaged_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.packaged_component.query_packaged_component" title="Permalink to this definition"></a></dt>
+<dd><p>Query the packaged component to check if it has already been created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_id</strong> (<em>str</em>) – The ID of the component.</p></li>
+<li><p><strong>package_version</strong> (<em>str</em>) – The version of the package.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the existing package, or an empty string if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

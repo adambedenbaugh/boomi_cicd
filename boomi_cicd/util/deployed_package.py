@@ -5,6 +5,18 @@ from boomi_cicd.util.common_util import *
 
 
 def create_deployed_package(release, package_id, environment_id):
+    """
+    Create a deployed package in the Boomi environment.
+
+    :param release: The release information.
+    :type release: dict
+    :param package_id: The ID of the package.
+    :type package_id: str
+    :param environment_id: The ID of the environment.
+    :type environment_id: str
+    :return: The deployment ID of the created package.
+    :rtype: str
+    """
     resource_path = "/DeployedPackage"
     environment_query = "boomi_cicd/util/json/deployedPackageCreate.json"
     payload = parse_json(environment_query)
@@ -22,6 +34,18 @@ def create_deployed_package(release, package_id, environment_id):
 
 
 def query_deployed_package(package_id, environment_id, currently_deployed=True):
+    """
+    Query the deployed package status in the Boomi environment.
+
+    :param package_id: The ID of the package.
+    :type package_id: str
+    :param environment_id: The ID of the environment.
+    :type environment_id: str
+    :param currently_deployed: Flag indicating if currently deployed packages should be queried (default: True).
+    :type currently_deployed: bool
+    :return: True if the package has already been deployed, False otherwise.
+    :rtype: bool
+    """
     resource_path = "/DeployedPackage/query"
     environment_query = "boomi_cicd/util/json/deployedPackageQuery.json"
     payload = parse_json(environment_query)
@@ -31,8 +55,8 @@ def query_deployed_package(package_id, environment_id, currently_deployed=True):
     payload["QueryFilter"]["expression"]["nestedExpression"][1]["argument"][
         0
     ] = package_id
-    # If active is True, then query for active packages.
-    # If active is False, then query for all packages.
+    # If active is True, then a query will be made for only active packages.
+    # If active is missing, then a query will be made for all packages.
     if currently_deployed:
         active_status = {"argument": [True], "operator": "EQUALS", "property": "active"}
         payload["QueryFilter"]["expression"]["nestedExpression"].append(active_status)
@@ -48,6 +72,14 @@ def query_deployed_package(package_id, environment_id, currently_deployed=True):
 
 
 def delete_deployed_package(deployment_id):
+    """
+    Delete a deployed package in the Boomi environment.
+
+    :param deployment_id: The ID of the deployment.
+    :type deployment_id: str
+    :return: The response text.
+    :rtype: str
+    """
     resource_path = "/DeployedPackage/{}".format(deployment_id)
 
     response = requests_delete(resource_path)

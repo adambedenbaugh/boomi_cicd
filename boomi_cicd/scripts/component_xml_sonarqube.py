@@ -18,7 +18,7 @@ url = "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/"
 sonarqube_version = "sonar-scanner-cli-4.8.0.2856-windows"
 sonarqube_version_zip = f"{sonarqube_version}.zip"
 sonarqube_version_unzip = "sonar-scanner-4.8.0.2856-windows"
-# linux= "
+
 # linux= "sonar-scanner-cli-4.8.0.2856-linux.zip"
 r = requests.get(url + sonarqube_version + ".zip", allow_redirects=True)
 with open(f"{boomi_cicd.CLI_BASE_DIR}/{sonarqube_version_zip}", "wb") as f:

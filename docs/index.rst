@@ -9,6 +9,19 @@ The boomi-cicd-cli-py library is used to automate Boomi deployments through the 
 It performs orchestration for deploying and managing Boomi runtimes, components, and metadata required for CI/CD.
 The Release Pipeline Configuration section has the common pipelines that are used
 
+Project Structure
+=================
+
+The project is broken into three sections.
+
+1. scripts - This directory contains the scripts that will be executed within a CI/CD pipeline.
+   The release_pipeline.py is the main script. There are additional example scripts that can be used as a starting point
+   for your own pipelines.
+2. util - This directory contains the utility scripts that are used by the scripts in the scripts
+   directory.
+3. templates - This directory contains the release pipeline templates. These templates can be
+   used as-is or as a starting point for your own release pipeline.
+
 Below is a list of the documentation available:
 
 .. toctree::

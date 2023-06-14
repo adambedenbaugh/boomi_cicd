@@ -79,6 +79,18 @@
 
 
 <div class="viewcode-block" id="create_deployed_package"><a class="viewcode-back" href="../../../modules/deployed_package.html#boomi_cicd.util.deployed_package.create_deployed_package">[docs]</a><span class="k">def</span> <span class="nf">create_deployed_package</span><span class="p">(</span><span class="n">release</span><span class="p">,</span> <span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a deployed package in the Boomi environment.</span>
+
+<span class="sd">    :param release: The release information.</span>
+<span class="sd">    :type release: dict</span>
+<span class="sd">    :param package_id: The ID of the package.</span>
+<span class="sd">    :type package_id: str</span>
+<span class="sd">    :param environment_id: The ID of the environment.</span>
+<span class="sd">    :type environment_id: str</span>
+<span class="sd">    :return: The deployment ID of the created package.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/DeployedPackage&quot;</span>
     <span class="n">environment_query</span> <span class="o">=</span> <span class="s2">&quot;boomi_cicd/util/json/deployedPackageCreate.json&quot;</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">environment_query</span><span class="p">)</span>
@@ -96,6 +108,18 @@
 
 
 <div class="viewcode-block" id="query_deployed_package"><a class="viewcode-back" href="../../../modules/deployed_package.html#boomi_cicd.util.deployed_package.query_deployed_package">[docs]</a><span class="k">def</span> <span class="nf">query_deployed_package</span><span class="p">(</span><span class="n">package_id</span><span class="p">,</span> <span class="n">environment_id</span><span class="p">,</span> <span class="n">currently_deployed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the deployed package status in the Boomi environment.</span>
+
+<span class="sd">    :param package_id: The ID of the package.</span>
+<span class="sd">    :type package_id: str</span>
+<span class="sd">    :param environment_id: The ID of the environment.</span>
+<span class="sd">    :type environment_id: str</span>
+<span class="sd">    :param currently_deployed: Flag indicating if currently deployed packages should be queried (default: True).</span>
+<span class="sd">    :type currently_deployed: bool</span>
+<span class="sd">    :return: True if the package has already been deployed, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/DeployedPackage/query&quot;</span>
     <span class="n">environment_query</span> <span class="o">=</span> <span class="s2">&quot;boomi_cicd/util/json/deployedPackageQuery.json&quot;</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">parse_json</span><span class="p">(</span><span class="n">environment_query</span><span class="p">)</span>
@@ -105,8 +129,8 @@
     <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;argument&quot;</span><span class="p">][</span>
         <span class="mi">0</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">package_id</span>
-    <span class="c1"># If active is True, then query for active packages.</span>
-    <span class="c1"># If active is False, then query for all packages.</span>
+    <span class="c1"># If active is True, then a query will be made for only active packages.</span>
+    <span class="c1"># If active is missing, then a query will be made for all packages.</span>
     <span class="k">if</span> <span class="n">currently_deployed</span><span class="p">:</span>
         <span class="n">active_status</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;argument&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span> <span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;EQUALS&quot;</span><span class="p">,</span> <span class="s2">&quot;property&quot;</span><span class="p">:</span> <span class="s2">&quot;active&quot;</span><span class="p">}</span>
         <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;QueryFilter&quot;</span><span class="p">][</span><span class="s2">&quot;expression&quot;</span><span class="p">][</span><span class="s2">&quot;nestedExpression&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">active_status</span><span class="p">)</span>
@@ -122,6 +146,14 @@
 
 
 <div class="viewcode-block" id="delete_deployed_package"><a class="viewcode-back" href="../../../modules/deployed_package.html#boomi_cicd.util.deployed_package.delete_deployed_package">[docs]</a><span class="k">def</span> <span class="nf">delete_deployed_package</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete a deployed package in the Boomi environment.</span>
+
+<span class="sd">    :param deployment_id: The ID of the deployment.</span>
+<span class="sd">    :type deployment_id: str</span>
+<span class="sd">    :return: The response text.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource_path</span> <span class="o">=</span> <span class="s2">&quot;/DeployedPackage/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">)</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests_delete</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span>

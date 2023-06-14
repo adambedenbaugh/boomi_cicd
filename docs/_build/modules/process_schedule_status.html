@@ -94,17 +94,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-boomi_cicd.util.process_schedule_status">
-<span id="process-schedule-status"></span><h1>process_schedule_status<a class="headerlink" href="#module-boomi_cicd.util.process_schedule_status" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="process-schedule-status">
+<h1>process_schedule_status<a class="headerlink" href="#process-schedule-status" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://help.boomi.com/bundle/developer_apis/page/r-atm-Project_Schedule_Status_object.html">Boomi AtomSphere API: Process Schedule Status</a></p>
+<span class="target" id="module-boomi_cicd.util.process_schedule_status"></span><dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.process_schedule_status.query_process_schedule_status">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.process_schedule_status.</span></span><span class="sig-name descname"><span class="pre">query_process_schedule_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/process_schedule_status.html#query_process_schedule_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.process_schedule_status.query_process_schedule_status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Query the process schedule status to check if the process is deployed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom_id</strong> (<em>str</em>) – The ID of the Atom.</p></li>
+<li><p><strong>process_id</strong> (<em>str</em>) – The ID of the process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The conceptual ID of the deployed process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>SystemExit: If the process is not deployed.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="boomi_cicd.util.process_schedule_status.update_process_schedule_status">
 <span class="sig-prename descclassname"><span class="pre">boomi_cicd.util.process_schedule_status.</span></span><span class="sig-name descname"><span class="pre">update_process_schedule_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conceptual_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/boomi_cicd/util/process_schedule_status.html#update_process_schedule_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#boomi_cicd.util.process_schedule_status.update_process_schedule_status" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Update the process schedule status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_id</strong> (<em>str</em>) – The ID of the component.</p></li>
+<li><p><strong>conceptual_id</strong> (<em>str</em>) – The conceptual ID of the process schedule.</p></li>
+<li><p><strong>atom_id</strong> (<em>str</em>) – The ID of the Atom.</p></li>
+<li><p><strong>enabled</strong> (<em>bool</em>) – Indicates whether the process schedule should be enabled or disabled.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the process schedule status update is successful.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
