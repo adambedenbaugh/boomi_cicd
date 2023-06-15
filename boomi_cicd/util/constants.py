@@ -21,8 +21,8 @@ ATOM_NAME_DR = os.environ.get("BOOMI_ATOM_NAME_DR")
 """Atom Name for DR deployments."""
 COMPONENT_GIT_URL = os.environ.get("BOOMI_COMPONENT_GIT_URL")
 """Git URL for component. Used when copying component XML to a repository."""
-WORKING_DIRECTORY = os.environ.get("BOOMI_WORKING_DIRECTORY")
-"""TODO"""
+# WORKING_DIRECTORY = os.environ.get("BOOMI_WORKING_DIRECTORY")
+# """TODO"""
 CLI_BASE_DIR = os.environ.get("BOOMI_CLI_BASE_DIR", "")
 """TODO"""
 RELEASE_BASE_DIR = os.environ.get("BOOMI_RELEASE_BASE_DIR", "")
@@ -35,9 +35,10 @@ SONAR_RULES_FILE = os.environ.get(
 """TODO"""
 
 # Set AtomSphere API Rate Limit - 10 calls per second
-CALLS = os.environ.get("BOOMI_API_CALLS", 20)
-RATE_LIMIT = os.environ.get("BOOMI_API_RATE_LIMIT", 1)
-RATE_LIMIT_MILLISECONDS = RATE_LIMIT * 1000
+CALLS_PER_SECOND = os.environ.get("BOOMI_API_CALLS", 10)
+"""Number of calls to the Boomi AtomSphere API per second. Default is 10."""
+RATE_LIMIT_SECONDS = 1
+RATE_LIMIT_MILLISECONDS = RATE_LIMIT_SECONDS * 1000
 
 # Set AtomSphere API XML namespace
 NAMESPACES = {"bns": "http://api.platform.boomi.com/"}

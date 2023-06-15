@@ -170,7 +170,7 @@
 
 
 <div class="viewcode-block" id="check_limit"><a class="viewcode-back" href="../../../modules/common_util.html#boomi_cicd.util.common_util.check_limit">[docs]</a><span class="nd">@sleep_and_retry</span>
-<span class="nd">@limits</span><span class="p">(</span><span class="n">calls</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">CALLS</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT</span><span class="p">)</span>
+<span class="nd">@limits</span><span class="p">(</span><span class="n">calls</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">CALLS_PER_SECOND</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">boomi_cicd</span><span class="o">.</span><span class="n">RATE_LIMIT_SECONDS</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_limit</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Empty function to limit the number of calls to the Atomsphere API.</span>

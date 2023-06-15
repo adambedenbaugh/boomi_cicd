@@ -23,8 +23,6 @@ Constants can be used within scripts by using boomi_cicd.<constant_name>. An exa
    :annotation:
 .. autodata:: COMPONENT_GIT_URL
    :annotation:
-.. autodata:: WORKING_DIRECTORY
-   :annotation:
 .. autodata:: CLI_BASE_DIR
    :annotation:
 .. autodata:: RELEASE_BASE_DIR
@@ -33,4 +31,7 @@ Constants can be used within scripts by using boomi_cicd.<constant_name>. An exa
    :annotation:
 .. autodata:: SONAR_RULES_FILE
    :annotation:
+.. autodata:: CALLS_PER_SECOND
+   :annotation:
+
 

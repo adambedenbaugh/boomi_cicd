@@ -96,7 +96,7 @@ def set_release():
 
 
 @sleep_and_retry
-@limits(calls=boomi_cicd.CALLS, period=boomi_cicd.RATE_LIMIT)
+@limits(calls=boomi_cicd.CALLS_PER_SECOND, period=boomi_cicd.RATE_LIMIT_SECONDS)
 def check_limit():
     """
     Empty function to limit the number of calls to the Atomsphere API.
