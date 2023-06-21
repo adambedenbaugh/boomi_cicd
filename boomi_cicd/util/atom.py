@@ -17,7 +17,7 @@ def query_atom(atom_name):
     :rtype: str
     """
     resource_path = "/Atom/query"
-    environment_query = os.path.join(boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/atomQuery.json")
+    environment_query = "boomi_cicd/util/json/atomQuery.json"
 
     payload = parse_json(environment_query)
     payload["QueryFilter"]["expression"]["argument"][0] = atom_name

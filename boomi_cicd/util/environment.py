@@ -7,9 +7,8 @@ from boomi_cicd.util.common_util import *
 def query_environment():
     resource_path = "/Environment/query"
     logging.info(resource_path)
-    environment_query = os.path.join(
-        boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/environmentQuery.json"
-    )
+    environment_query = "boomi_cicd/util/json/environmentQuery.json"
+    
     payload = parse_json(environment_query)
     payload["QueryFilter"]["expression"]["argument"][0] = boomi_cicd.ENVIRONMENT_NAME
 

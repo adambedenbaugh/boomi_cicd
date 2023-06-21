@@ -22,9 +22,7 @@ def change_listener_status(listener_id, atom_id, action):
     :rtype: bool
     """
     resource_path = "/changeListenerStatus"
-    change_listener_status_json = os.path.join(
-        boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/changeListenerStatus.json"
-    )
+    change_listener_status_json =  "boomi_cicd/util/json/changeListenerStatus.json"
 
     payload = parse_json(change_listener_status_json)
     payload["listenerId"] = listener_id

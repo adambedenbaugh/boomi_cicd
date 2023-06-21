@@ -6,8 +6,7 @@ from boomi_cicd.util.common_util import *
 
 def query_process_schedule_status(atom_id, process_id):
     resource_path = "/ProcessScheduleStatus/query"
-    process_schedule_query = os.path.join(boomi_cicd.WORKING_DIRECTORY,
-                                          "boomi_cicd/util/json/processScheduleStatusQuery.json")
+    process_schedule_query = "boomi_cicd/util/json/processScheduleStatusQuery.json"
 
     payload = parse_json(process_schedule_query)
     payload["QueryFilter"]["expression"]["nestedExpression"][0]["argument"][0] = atom_id

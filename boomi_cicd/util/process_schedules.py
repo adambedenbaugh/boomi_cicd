@@ -6,9 +6,7 @@ from boomi_cicd.util.common_util import *
 
 def query_process_schedules(atom_id, process_id):
     resource_path = "/ProcessSchedules/query"
-    process_schedule_query = os.path.join(
-        boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/processScheduleQuery.json"
-    )
+    process_schedule_query = "boomi_cicd/util/json/processScheduleQuery.json"
 
     payload = parse_json(process_schedule_query)
     payload["QueryFilter"]["expression"]["nestedExpression"][0]["argument"][0] = atom_id
@@ -30,9 +28,7 @@ def query_process_schedules(atom_id, process_id):
 
 def update_process_schedules(component_id, conceptual_id, atom_id, schedules):
     resource_path = "/ProcessSchedules/{}/update".format(conceptual_id)
-    process_schedule_updated = os.path.join(
-        boomi_cicd.WORKING_DIRECTORY, "boomi_cicd/util/json/processScheduleUpdate.json"
-    )
+    process_schedule_updated = "boomi_cicd/util/json/processScheduleUpdate.json"
 
     payload = parse_json(process_schedule_updated)
     payload["processId"] = component_id
